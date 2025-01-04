@@ -1,6 +1,6 @@
-##PARA FAZER RODAR
+## PARA FAZER RODAR
 
-###front-end
+### front-end
 
 - Baixa essa misera aqui dentro do diretorio do front end
 ```bash
