@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-      <h1>ECONOTIFICA</h1>
+      <img :src="require('@/assets/setima_logo.png')" alt="LOGO-ECONOTIFICA" class="logo">
     </header>
     <div id="app" class="login-container">
       <div class="overlay"></div>
@@ -50,7 +50,13 @@
   
   <style scoped>
   
-  
+  .logo {
+  max-width:300px; /* Ajuste o tamanho do logo */
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 1)); /* Sombra ajustada ao contorno */
+}
   /* Estilo principal */
   .login-container {
     display: flex;

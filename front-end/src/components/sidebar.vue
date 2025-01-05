@@ -1,6 +1,5 @@
 <template>
   <div id="sidebar">
-    <h1 class="logo">ECONOTIFICA</h1>
     <nav>
       <ul>
         <li><a href="#perfil">Perfil</a></li>

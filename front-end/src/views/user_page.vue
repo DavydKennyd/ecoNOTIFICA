@@ -1,7 +1,7 @@
 <template>
   <div id="perfil-page">
     <div id="navbar">
-      <h1 class="navbar-title">ECONOTIFICA</h1>
+      <img :src="require('@/assets/setima_logo.png')" alt="LOGO" class="logo">
     </div>
     <div id="content-container">
       <Lateral_sidebar />
@@ -63,14 +63,24 @@ body{
 #perfil-page {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Garantir que o layout use a altura completa da tela */
+  height: 100vh; 
   overflow: hidden;
+}
+
+.logo {
+  position: absolute; /* Fixa a posição no layout */
+  top: 7px; /* Ajusta a posição vertical */
+  left: 15px; /* Ajusta a posição horizontal */
+  width: 250px; /* Ajuste o tamanho da logo */
+  height: auto; /* Mantém a proporção */
+  z-index: 10; /* Garante que fique visível acima dos elementos */
+  filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.7)); 
 }
 
 /* Navbar */
 #navbar {
   height: 60px;
-  background-color: #4caf50; /* Mesma cor da sidebar */
+  background-color: #4caf50; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,23 +89,23 @@ body{
   font-weight: bold;
 }
 
-.navbar-title {
-  margin: 0;
-}
-
 /* Content Container */
 #content-container {
   display: flex;
-  flex: 1; /* Preencher o restante da altura */
+  flex: 1; 
   overflow: hidden;
+  position: relative; /* Necessário para o posicionamento da logo */
 }
 
+.navbar-title {
+  margin: 0;
+}
 /* Sidebar e Conteúdo */
 #content {
-  margin-left: 100px; /* Largura da sidebar */
+  margin-left: 100px; 
   padding: 20px;
   flex: 1;
-  overflow-y: auto; /* Scroll no conteúdo */
+  overflow-y: auto; 
 }
 
 .header {
@@ -122,13 +132,13 @@ body{
   background-color: #e8f5e9;
   padding: 20px;
   border-radius: 10px;
-  max-width: 500px; /* Mantém o formulário compacto */
-  margin-left: 0; /* Remove centralização */
-  margin-right: auto; /* Garante que fique alinhado à esquerda */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
-  max-height: 80vh; /* Limitar altura para evitar overflow */
-  overflow-y: auto; /* Scroll interno se necessário */
-  -ms-overflow-style: none; /* Esconde a barra no IE/Edge */
+  max-width: 500px; 
+  margin-left: 0; 
+  margin-right: auto; 
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
+  max-height: 80vh; 
+  overflow-y: auto; 
+  -ms-overflow-style: none; 
   scrollbar-width: none;
 }
 
