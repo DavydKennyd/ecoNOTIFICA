@@ -80,7 +80,7 @@ body{
 /* Navbar */
 #navbar {
   height: 60px;
-  background-color: #4caf50; 
+  background-color: #1F7F15; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,8 +129,8 @@ body{
 
 /* Formulário */
 .form-container {
-  background-color: #e8f5e9;
-  padding: 20px;
+  background-color: #7FBF6D;
+  padding: 40px;
   border-radius: 10px;
   max-width: 500px; 
   margin-left: 0; 

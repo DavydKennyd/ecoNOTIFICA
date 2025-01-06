@@ -21,7 +21,7 @@ export default {
 #sidebar {
   width: 250px;
   height: 100vh;
-  background-color: #4caf50; /* Cor verde */
+  background-color: #1F7F15; /* Cor verde */
   color: white;
   display: flex;
   flex-direction: column;
