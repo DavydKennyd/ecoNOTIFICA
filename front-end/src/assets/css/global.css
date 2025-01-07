@@ -1,8 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 body {
   font-family: "Nunito", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+} */
+@import url('https://fonts.googleapis.com/css2?family=Inria+Serif:wght@300;400;700&display=swap');
+
+
+/*Variaveis Css*/
+:root{
+  --colorForte: #005221;
+  --colorClara: #61ff90;
+  --colorOrigin: #1F7F15;
+  --colorBanco: #ffffff;
 }
+
+.botao--{
+  background-color: var(--colorOrigin);
+  color: var(--colorBanco);
+  transition: 0.2s;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 10px;
+}
+
+.botao--:hover{
+  cursor: pointer;
+  background-color: var(--colorClara);
+  color: var(--colorForte);
+  font-weight: 700;
+}
+
+.inria{
+  font-family: "Inria Serif", serif;
+  font-weight: 300;
+  font-style: normal;
+  
+}
+
+
+
+
+/*Elemento reset*/
+*{
+  margin: 0;
+  padding: 0;
+  
+}
+
+a{
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+li{
+  text-decoration: none;
+  list-style: none;
+}
+

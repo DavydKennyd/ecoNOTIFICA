@@ -26,7 +26,7 @@
         <router-link to="/login" class="login-link">
         Já tem cadastro? <span>Click aqui</span>
       </router-link>
-        <button type="submit" class="btn-register">CADASTRAR</button>
+        <center><button type="submit" class="btn-register botao--">CADASTRAR</button></center>
       </form>
     </div>
   </div>
@@ -160,7 +160,7 @@ html, body {
   cursor: pointer;
 }
 
-.btn-register {
+/* .btn-register {
   width: 100%;
   padding: 10px;
   background-color: #28a745;
@@ -175,6 +175,6 @@ html, body {
 
 .btn-register:hover {
   background-color: #218838;
-}
+} */
 </style>
 

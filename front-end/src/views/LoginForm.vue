@@ -17,12 +17,16 @@
             <input type="password" id="password" placeholder="******" />
           </div>
           <a href="#" class="forgot-password">Esqueceu a senha?</a>
-          <button type="submit" class="btn-login">ENTRAR</button>
+          <center><button type="submit" class="btn-login botao--">ENTRAR</button></center>
         </form>
       </div>
     </div>
   </template>
   
+
+
+/*Exportação*/
+
   <script>
   export default {
     name: "LoginForm",
@@ -31,6 +35,9 @@
   
   
   
+
+
+
   <style>
   html, body {
     margin: 0;
@@ -196,7 +203,7 @@
   }
   
   /* Botão */
-  .btn-login {
+  /* .btn-login {
     width: 100%;
     padding: 10px;
     background-color: #28a745;
@@ -210,6 +217,6 @@
   
   .btn-login:hover {
     background-color: #218838;
-  }
+  } */
   </style>
   
