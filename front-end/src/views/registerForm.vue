@@ -5,41 +5,67 @@
   <div id="app" class="register-container">
     <div class="overlay"></div>
     <div class="content">
-      <form class="register-form">
+      <form class="register-form" @submit.prevent="register">
         <h2>Cadastro</h2>
         <div class="form-group">
           <label for="username">Usuário:</label>
-          <input type="text" id="username" placeholder="Seu nome de usuário" />
+          <input v-model="username" type="text" id="username" placeholder="Seu nome de usuário" />
         </div>
         <div class="form-group">
           <label for="email">Email:</label>
-          <input type="email" id="email" placeholder="exemple@gmail.com" />
+          <input v-model="email" type="email" id="email" placeholder="exemplo@gmail.com" />
         </div>
         <div class="form-group">
           <label for="password">Senha:</label>
-          <input type="password" id="password" placeholder="******" />
+          <input v-model="password" type="password" id="password" placeholder="******" />
         </div>
         <div class="form-group">
           <label for="confirm-password">Confirmação de senha:</label>
-          <input type="password" id="confirm-password" placeholder="******" />
+          <input v-model="confirmPassword" type="password" id="confirm-password" placeholder="******" />
         </div>
         <router-link to="/login" class="login-link">
-        Já tem cadastro? <span>Click aqui</span>
-      </router-link>
+          Já tem cadastro? <span>Clique aqui</span>
+        </router-link>
         <button type="submit" class="btn-register">CADASTRAR</button>
       </form>
     </div>
   </div>
 </template>
 
-
 <script>
+import axios from 'axios';
+
 export default {
   name: "cadastroForm",
+
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    };
+  },
+  methods: {
+    async register() {
+      if (this.password !== this.confirmPassword) {
+        alert("As senhas não coincidem.");
+        return;
+      }
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/cadastro', {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+        });
+        console.log(response.data); // Resposta de sucesso ou erro
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
 };
 </script>
-
-
 
 <style>
 html, body {
@@ -47,7 +73,6 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  
 }
 
 #app {
@@ -55,8 +80,6 @@ html, body {
   height: 100%;
 }
 </style>
-
-
 
 <style scoped>
 /* Estilo geral */
@@ -74,11 +97,11 @@ html, body {
   height: 100vh;
 }
 .logo {
-  max-width:300px; /* Ajuste o tamanho do logo */
+  max-width: 300px;
   height: auto;
   margin: 0 auto;
   display: block;
-  filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 1)); /* Sombra ajustada ao contorno */
+  filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 1));
 }
 
 .overlay {
@@ -88,7 +111,7 @@ html, body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); 
-  z-index: 1; 
+  z-index: 1;
 }
 
 /* Header */
@@ -177,4 +200,3 @@ html, body {
   background-color: #218838;
 }
 </style>
-

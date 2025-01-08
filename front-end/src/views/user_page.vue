@@ -70,7 +70,7 @@ export default {
   },
   data() {
     return {
-      currentView: "add", // Define a view inicial como "Adicionar ponto de coleta"
+      currentView: "add", 
       pontosDeColeta: [
         {
           nome: "Ponto de Coleta - Mercado Central",
@@ -82,13 +82,13 @@ export default {
           fotoVideo: "Não há mídia disponível",
           descricao: "Este ponto de coleta aceita materiais recicláveis de segunda a sexta, das 8h às 17h.",
         },
-        // Adicione mais pontos conforme necessário
+      
       ],
     };
   },
   methods: {
     toggleView(view) {
-      this.currentView = view; // Alterna entre as visualizações
+      this.currentView = view; 
     },
   },
 };
@@ -102,7 +102,7 @@ body {
   font-family: "Nunito", sans-serif;
 }
 
-/* Layout principal */
+
 #perfil-page {
   display: flex;
   flex-direction: column;
