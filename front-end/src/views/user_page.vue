@@ -1,16 +1,16 @@
 <template>
   <div id="perfil-page">
     <div id="navbar">
-      <img :src="require('@/assets/setima_logo.png')" alt="LOGO" class="logo">
+      <img :src="require('@/assets/setima_logo.png')" alt="LOGO" class="logo" />
     </div>
     <div id="content-container">
       <Lateral_sidebar />
       <div id="content">
         <div class="header">
-          <button class="btn">Adicionar ponto de coleta</button>
-          <button class="btn">Buscar ponto de coleta</button>
+          <button class="btn" @click="toggleView('add')">Adicionar ponto de coleta</button>
+          <button class="btn" @click="toggleView('search')">Buscar ponto de coleta</button>
         </div>
-        <div class="form-container">
+        <div v-if="currentView === 'add'" class="form-container">
           <h3>Informações Adicionais</h3>
           <form>
             <label>Nome:</label>
@@ -38,6 +38,23 @@
             <textarea placeholder="Adicione uma descrição"></textarea>
           </form>
         </div>
+        <div v-if="currentView === 'search'" class="form-container">
+          <h3>Pontos de Coleta</h3>
+          <div 
+            class="ponto-de-coleta" 
+            v-for="(ponto, index) in pontosDeColeta" 
+            :key="index"
+          >
+            <h4>{{ ponto.nome }}</h4>
+            <p>📍 Endereço: {{ ponto.endereco }}</p>
+            <p>🗺️ Referência: {{ ponto.referencia }}</p>
+            <p>📋 Tipo de Material: {{ ponto.tipoMaterial }}</p>
+            <p>👤 Responsável: {{ ponto.responsavel }}</p>
+            <p>📞 Contato: {{ ponto.contato }}</p>
+            <p>📷 Foto/Video: {{ ponto.fotoVideo }}</p>
+            <p>📝 Descrição: {{ ponto.descricao }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -51,15 +68,41 @@ export default {
   components: {
     Lateral_sidebar,
   },
+  data() {
+    return {
+      currentView: "add", 
+      pontosDeColeta: [
+        {
+          nome: "Ponto de Coleta - Mercado Central",
+          endereco: "Rua Passa Nada (Por trás do beco do sufoco), 157, Bairro do Embassai, Acari, RN.",
+          referencia: "Próximo à feira central",
+          tipoMaterial: "Plástico, papel, vidro, eletrônicos",
+          responsavel: "João da Silva",
+          contato: "(84) 99999-9999",
+          fotoVideo: "Não há mídia disponível",
+          descricao: "Este ponto de coleta aceita materiais recicláveis de segunda a sexta, das 8h às 17h.",
+        },
+      
+      ],
+    };
+  },
+  methods: {
+    toggleView(view) {
+      this.currentView = view; 
+    },
+  },
 };
 </script>
 
 <style scoped>
+/* Estilos gerais */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-body{
+
+body {
   font-family: "Nunito", sans-serif;
 }
-/* Layout principal */
+
+
 #perfil-page {
   display: flex;
   flex-direction: column;
@@ -68,12 +111,12 @@ body{
 }
 
 .logo {
-  position: absolute; /* Fixa a posição no layout */
-  top: 7px; /* Ajusta a posição vertical */
-  left: 15px; /* Ajusta a posição horizontal */
-  width: 250px; /* Ajuste o tamanho da logo */
-  height: auto; /* Mantém a proporção */
-  z-index: 10; /* Garante que fique visível acima dos elementos */
+  position: absolute;
+  top: 7px;
+  left: 15px;
+  width: 250px;
+  height: auto;
+  z-index: 10;
   filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.7)); 
 }
 
@@ -94,12 +137,13 @@ body{
   display: flex;
   flex: 1; 
   overflow: hidden;
-  position: relative; /* Necessário para o posicionamento da logo */
+  position: relative; 
 }
 
 .navbar-title {
   margin: 0;
 }
+
 /* Sidebar e Conteúdo */
 #content {
   margin-left: 100px; 
@@ -159,5 +203,27 @@ form textarea {
 
 form textarea {
   height: 100px;
+}
+
+/* Pontos de Coleta */
+.ponto-de-coleta {
+  background-color: #E3F8E3;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: #333;
+}
+
+.ponto-de-coleta h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #1F7F15;
+}
+
+.ponto-de-coleta p {
+  margin: 5px 0;
 }
 </style>
