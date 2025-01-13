@@ -41,24 +41,25 @@ export default {
     };
   },
   methods: {
-  async login() {
-    try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email: this.email,
-        password: this.password,
-      });
+    async login() {
+  try {
+    const response = await axios.post('http://localhost:5000/api/auth/login', {
+      email: this.email,
+      password: this.password,
+    });
 
-      const { token } = response.data;
+    const { token, user } = response.data;
 
-      // Armazena o token no localStorage
-      localStorage.setItem('authToken', token);
+    // Armazenar o token e o nome de usuário no localStorage
+    localStorage.setItem('authToken', token);
+    localStorage.setItem('username', user.username);
 
-      // Redireciona para a página de perfil
-      this.$router.push('/perfil');
-    } catch (error) {
-      console.error(error.response?.data?.message || 'Erro ao realizar login');
-    }
-  },
+    // Redirecionar para a página de perfil
+    this.$router.push('/perfil');
+  } catch (error) {
+    console.error(error.response?.data?.message || 'Erro ao realizar login');
+  }
+}
 },
 
 };

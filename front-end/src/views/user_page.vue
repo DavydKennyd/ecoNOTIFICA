@@ -73,7 +73,8 @@ export default {
   },
   data() {
     return {
-      currentView: "add", 
+      currentView: "add",
+      username: localStorage.getItem('username'),  // Pegando o nome do usuário
       pontosDeColeta: [
         {
           nome: "Ponto de Coleta - Mercado Central",
@@ -90,13 +91,14 @@ export default {
   },
   methods: {
     toggleView(view) {
-      this.currentView = view; 
+      this.currentView = view;
     },
     detalharPonto(index) {
       alert(`Detalhes do ponto de coleta: ${this.pontosDeColeta[index].descricao}`);
     },
   },
 };
+
 </script>
 
 <style scoped>
