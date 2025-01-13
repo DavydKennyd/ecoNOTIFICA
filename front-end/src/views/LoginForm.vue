@@ -41,18 +41,26 @@ export default {
     };
   },
   methods: {
-    async login() {
-      try {
-        const response = await axios.post('http://localhost:5000/api/auth/login', {
-          email: this.email,
-          password: this.password,
-        });
-        console.log(response.data); // Token de sucesso ou erro
-      } catch (error) {
-        console.error(error);
-      }
-    },
+  async login() {
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email: this.email,
+        password: this.password,
+      });
+
+      const { token } = response.data;
+
+      // Armazena o token no localStorage
+      localStorage.setItem('authToken', token);
+
+      // Redireciona para a página de perfil
+      this.$router.push('/perfil');
+    } catch (error) {
+      console.error(error.response?.data?.message || 'Erro ao realizar login');
+    }
   },
+},
+
 };
 </script>
 

@@ -51,8 +51,11 @@
             <p>📋 Tipo de Material: {{ ponto.tipoMaterial }}</p>
             <p>👤 Responsável: {{ ponto.responsavel }}</p>
             <p>📞 Contato: {{ ponto.contato }}</p>
-            <p>📷 Foto/Video: {{ ponto.fotoVideo }}</p>
+            <div v-if="ponto.fotoVideo !== 'Não há mídia disponível'">
+              <img :src="ponto.fotoVideo" alt="Foto do ponto de coleta" class="media" />
+            </div>
             <p>📝 Descrição: {{ ponto.descricao }}</p>
+            <button @click="detalharPonto(index)">Detalhar</button>
           </div>
         </div>
       </div>
@@ -82,13 +85,15 @@ export default {
           fotoVideo: "Não há mídia disponível",
           descricao: "Este ponto de coleta aceita materiais recicláveis de segunda a sexta, das 8h às 17h.",
         },
-      
       ],
     };
   },
   methods: {
     toggleView(view) {
       this.currentView = view; 
+    },
+    detalharPonto(index) {
+      alert(`Detalhes do ponto de coleta: ${this.pontosDeColeta[index].descricao}`);
     },
   },
 };
@@ -225,5 +230,12 @@ form textarea {
 
 .ponto-de-coleta p {
   margin: 5px 0;
+}
+
+.media {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 5px;
 }
 </style>
