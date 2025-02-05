@@ -1,5 +1,13 @@
 {
   "dependencies": {
     "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run server --prefix back-end\" \"npm run serve --prefix front-end\"",
+    "server": "npm start --prefix back-end",
+    "client": "npm run serve --prefix front-end"
   }
 }
