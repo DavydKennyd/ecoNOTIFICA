@@ -1,7 +1,7 @@
 <template>
 
   <header class="header">
-    <img :src="require('@/assets/setima_logo.png')" alt="LOGO-ECONOTIFICA" class="logo">
+    <img :src="require('@/assets/nova_variacao.png')" alt="LOGO-ECONOTIFICA" class="logo">
   </header>
   <div id="app" class="login-container">
     <div class="overlay"></div>

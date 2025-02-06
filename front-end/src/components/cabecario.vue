@@ -3,7 +3,7 @@
 
     <ul>
         <div>
-            <li><img :src="require('@/assets/icone de mundo.png')" alt="icone" class="icone"></li>
+            <li><img :src="require('@/assets/sexto_simbolo.png')" alt="icone" class="icone"></li>
         </div>
         <div class="div2">
             <li><router-link :to="rota1">

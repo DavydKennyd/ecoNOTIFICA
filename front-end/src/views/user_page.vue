@@ -1,7 +1,7 @@
 <template>
   <div id="perfil-page">
     <div id="navbar">
-      <img :src="require('@/assets/setima_logo.png')" alt="LOGO" class="logo" />
+      <img :src="require('@/assets/nova_variacao.png')" alt="LOGO" class="logo" />
     </div>
     <div id="content-container">
       <Lateral_sidebar />

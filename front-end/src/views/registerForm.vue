@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <img :src="require('@/assets/setima_logo.png')" alt="logo" class="logo">
+    <img :src="require('@/assets/nova_variacao.png')" alt="logo" class="logo">
   </header>
   <div id="app" class="register-container">
     <div class="overlay"></div>

@@ -8,7 +8,7 @@
 
         <div class="DeCima inria">
             <center>
-                <h1>ECONOTÍFICA</h1>
+                <h1>ECONOTIFICA</h1>
             </center>
 
         </div>
