@@ -2,7 +2,7 @@
 
 ### front-end
 
-- Baixa essa misera aqui dentro do diretorio do front end
+- Baixa essa  biblioteca aqui dentro do diretorio do front end
 ```bash
     npm install vue-router
 ```
