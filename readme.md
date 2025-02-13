@@ -17,7 +17,7 @@
 ### PARA VER AS PAGINAS PELAS ROTAS
 - basta adiconar /login ou /cadastro na URL que ja vai direto.
 
-- Ai pra ver o projeto rodando é assim:
+- Ai pra ver o projeto rodando depois de ter instalado o vue no front-end, é assim:
 ```bash
     npm start
 ```
