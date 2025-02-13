@@ -1,10 +1,12 @@
 ## PARA FAZER RODAR
 
-### front-end
+### Front-End
 
-- Baixa essa  biblioteca aqui dentro do diretorio do front end
+- Sempre que clonar o repositírio, baixe o vue na pasta front end do projeto
 ```bash
-    npm install vue-router
+    cd ecoNOTIFICA
+    /ecoNOTIFICA$ cd front-end/
+    /ecoNOTIFICA/front-end$ npm install vue-router
 ```
 
 ### PARA VER AS PAGINAS PELAS ROTAS
