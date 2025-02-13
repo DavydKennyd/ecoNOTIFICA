@@ -12,32 +12,35 @@
         </div>
         <div v-if="currentView === 'add'" class="form-container">
           <h3>Informações Adicionais</h3>
-          <form>
+          <form @submit.prevent="adicionarPontoDeColeta">
             <label>Nome:</label>
-            <input type="text" placeholder="Nome do local" />
+            <input type="text" v-model="novoPonto.nome" placeholder="Nome do local" required />
 
             <label>Endereço:</label>
-            <input type="text" placeholder="Digite o endereço" />
+            <input type="text" v-model="novoPonto.endereco" placeholder="Digite o endereço" required />
 
             <label>Referência:</label>
-            <input type="text" placeholder="Digite uma referência" />
+            <input type="text" v-model="novoPonto.referencia" placeholder="Digite uma referência" />
 
             <label>Tipo de Material:</label>
-            <input type="text" placeholder="Tipo de material" />
+            <input type="text" v-model="novoPonto.tipoMaterial" placeholder="Tipo de material" required />
 
             <label>Responsável:</label>
-            <input type="text" placeholder="Nome do responsável" />
+            <input type="text" v-model="novoPonto.responsavel" placeholder="Nome do responsável" required />
 
             <label>Contato:</label>
-            <input type="text" placeholder="Informações de contato" />
+            <input type="text" v-model="novoPonto.contato" placeholder="Informações de contato" required />
 
             <label>Foto/Video:</label>
-            <input type="file" />
+            <input type="file" @change="(event) => novoPonto.fotoVideo = event.target.files[0]" />
 
             <label>Descrição:</label>
-            <textarea placeholder="Adicione uma descrição"></textarea>
+            <textarea v-model="novoPonto.descricao" placeholder="Adicione uma descrição"></textarea>
+
+            <button type="submit" class="btn">Adicionar</button>
           </form>
         </div>
+
         <div v-if="currentView === 'search'" class="form-container">
           <h3>Pontos de Coleta</h3>
           <div 
@@ -74,32 +77,84 @@ export default {
   data() {
     return {
       currentView: "add",
-      username: localStorage.getItem('username'),  // Pegando o nome do usuário
-      pontosDeColeta: [
-        {
-          nome: "Ponto de Coleta - Mercado Central",
-          endereco: "Rua Passa Nada (Por trás do beco do sufoco), 157, Bairro do Embassai, Acari, RN.",
-          referencia: "Próximo à feira central",
-          tipoMaterial: "Plástico, papel, vidro, eletrônicos",
-          responsavel: "João da Silva",
-          contato: "(84) 99999-9999",
-          fotoVideo: "Não há mídia disponível",
-          descricao: "Este ponto de coleta aceita materiais recicláveis de segunda a sexta, das 8h às 17h.",
-        },
-      ],
+      username: localStorage.getItem('username'),  
+      pontosDeColeta: [],
+      novoPonto: {  // 🔹 Estado para armazenar os dados do formulário
+        nome: "",
+        endereco: "",
+        referencia: "",
+        tipoMaterial: "",
+        responsavel: "",
+        contato: "",
+        fotoVideo: null,
+        descricao: "",
+      }
     };
   },
   methods: {
-    toggleView(view) {
-      this.currentView = view;
+    async fetchPontosDeColeta() {
+      try {
+        const response = await fetch('http://localhost:5000/api/pontos/pontos-de-coleta');
+        const data = await response.json();
+        this.pontosDeColeta = data;
+      } catch (error) {
+        console.error('Erro ao buscar pontos de coleta:', error);
+      }
     },
-    detalharPonto(index) {
-      alert(`Detalhes do ponto de coleta: ${this.pontosDeColeta[index].descricao}`);
-    },
-  },
-};
 
+    async adicionarPontoDeColeta() {
+      try {
+        const formData = new FormData();
+        formData.append("nome", this.novoPonto.nome);
+        formData.append("endereco", this.novoPonto.endereco);
+        formData.append("referencia", this.novoPonto.referencia);
+        formData.append("tipoMaterial", this.novoPonto.tipoMaterial);
+        formData.append("responsavel", this.novoPonto.responsavel);
+        formData.append("contato", this.novoPonto.contato);
+        formData.append("descricao", this.novoPonto.descricao);
+        
+        if (this.novoPonto.fotoVideo) {
+          formData.append("fotoVideo", this.novoPonto.fotoVideo);
+        }
+
+        const response = await fetch('http://localhost:5000/api/pontos/pontos-de-coleta', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao adicionar o ponto de coleta");
+        }
+
+        const novoPontoAdicionado = await response.json();
+        this.pontosDeColeta.push(novoPontoAdicionado);
+
+        // 🔹 Resetando o formulário após adicionar
+        this.novoPonto = {
+          nome: "",
+          endereco: "",
+          referencia: "",
+          tipoMaterial: "",
+          responsavel: "",
+          contato: "",
+          fotoVideo: null,
+          descricao: "",
+        };
+
+        alert("Ponto de coleta adicionado com sucesso!");
+        this.currentView = "search"; // Alterando a tela para visualizar os pontos adicionados
+      } catch (error) {
+        console.error("Erro ao adicionar ponto de coleta:", error);
+        alert("Erro ao adicionar ponto de coleta!");
+      }
+    }
+  },
+  mounted() {
+    this.fetchPontosDeColeta();
+  }
+};
 </script>
+
 
 <style scoped>
 /* Estilos gerais */
