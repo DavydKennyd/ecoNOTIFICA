@@ -1,7 +1,7 @@
 <template>
 
   <header class="header">
-    <img :src="require('@/assets/nova_variacao.png')" alt="LOGO-ECONOTIFICA" class="logo">
+    <img :src="require('@/assets/logo_login.png')" alt="LOGO-ECONOTIFICA" class="logo">
   </header>
   <div id="app" class="login-container">
     <div class="overlay"></div>
@@ -83,7 +83,7 @@ body {
 <style scoped>
 
 .logo {
-  max-width: 300px;
+  max-width: 265px;
   height: auto;
   margin: 0 auto;
   display: block;
@@ -115,9 +115,10 @@ body {
 }
 
 .header {
-  background: linear-gradient(to bottom, #016126, #06DB58, #03e75b);
+  background: linear-gradient(to bottom, #1B3C29, #355E3B, #4CAF50);
   width: 100%;
-  padding: 20px 0;
+  height: 50px;
+  padding: 20px;
   text-align: center;
   position: relative;
   top: 0;

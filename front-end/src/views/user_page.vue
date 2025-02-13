@@ -1,7 +1,7 @@
 <template>
   <div id="perfil-page">
     <div id="navbar">
-      <img :src="require('@/assets/nova_variacao.png')" alt="LOGO" class="logo" />
+      <img :src="require('@/assets/logo_simples.png')" alt="LOGO" class="logo" />
     </div>
     <div id="content-container">
       <Lateral_sidebar />
@@ -115,13 +115,14 @@ body {
   flex-direction: column;
   height: 100vh; 
   overflow: hidden;
+  background-color:rgb(231, 231, 231);
 }
 
 .logo {
   position: absolute;
   top: 7px;
-  left: 15px;
-  width: 250px;
+  left: 25px;
+  width: 235px;
   height: auto;
   z-index: 10;
   filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.7)); 
@@ -130,7 +131,7 @@ body {
 /* Navbar */
 #navbar {
   height: 60px;
-  background-color: #1F7F15; 
+  background-color:rgb(53, 94, 59); 
   display: flex;
   align-items: center;
   justify-content: center;
