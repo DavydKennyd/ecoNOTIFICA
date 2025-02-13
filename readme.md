@@ -12,6 +12,8 @@
 
     Por fim, dentro do diretório front-end execute o comando
     npm install vue-router
+
+    Depois volte para o diretório raiz do projeto
 ```
 
 ### PARA VER AS PAGINAS PELAS ROTAS
