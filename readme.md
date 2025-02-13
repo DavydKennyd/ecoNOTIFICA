@@ -2,7 +2,7 @@
 
 ### Front-End
 
-- Sempre que clonar o repositírio, baixe o vue na pasta front end do projeto
+- Caso não tenha o vue baixado, baixe dentro da pasta front end do projeto
 ```bash
     cd ecoNOTIFICA
     /ecoNOTIFICA$ cd front-end/
