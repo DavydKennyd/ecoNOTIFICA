@@ -3,17 +3,21 @@
 ### Front-End
 
 - Caso não tenha o vue baixado, baixe dentro da pasta front end do projeto
+```
+-  Entre no diretório do projeto
 ```bash
-    Entre no diretório do projeto
     cd ecoNOTIFICA
-
-    Agora entre no diretório front-end
+```
+- Agora entre no diretório front-end
+```bash
     /ecoNOTIFICA$ cd front-end/
-
-    Por fim, dentro do diretório front-end execute o comando
+```
+- Por fim, dentro do diretório front-end execute o comando
+```bash
     npm install vue-router
-
-    Depois volte para o diretório raiz do projeto
+```
+- Depois volte para o diretório raiz do projeto
+```bash
     cd ..
 ```
 
