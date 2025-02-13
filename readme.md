@@ -4,9 +4,14 @@
 
 - Caso não tenha o vue baixado, baixe dentro da pasta front end do projeto
 ```bash
+    Entre no diretório do projeto
     cd ecoNOTIFICA
+
+    Agora entre no diretório front-end
     /ecoNOTIFICA$ cd front-end/
-    /ecoNOTIFICA/front-end$ npm install vue-router
+
+    Por fim, dentro do diretório front-end execute o comando
+    npm install vue-router
 ```
 
 ### PARA VER AS PAGINAS PELAS ROTAS
