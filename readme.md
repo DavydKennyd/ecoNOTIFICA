@@ -3,7 +3,7 @@
 ### Front-End
 
 - Caso não tenha o vue baixado, baixe dentro da pasta front end do projeto
-```
+
 -  Entre no diretório do projeto
 ```bash
     cd ecoNOTIFICA
