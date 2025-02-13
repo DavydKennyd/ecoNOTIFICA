@@ -21,7 +21,7 @@
     cd ..
 ```
 
-### PARA VER AS PAGINAS PELAS ROTAS
+### PARA VER AS PÁGINAS PELAS ROTAS
 - basta adiconar /login ou /cadastro na URL que ja vai direto.
 
 - Ai pra ver o projeto rodando depois de ter instalado o vue no front-end, é assim:
