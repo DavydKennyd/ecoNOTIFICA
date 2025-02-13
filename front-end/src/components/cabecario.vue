@@ -6,13 +6,16 @@
             <li><img :src="require('@/assets/simbolo.png')" alt="icone" class="icone"></li>
         </div>
         <div class="div2">
-            <li><router-link :to="rota1">
+            <!-- <li><router-link :to="rota1">
                     <p class="botao--">{{nome1}}</p>
-                </router-link></li>
+                </router-link></li> -->
             <li><router-link :to="rota2">
                     <p class="botao--">{{nome2}}</p>
                 </router-link></li>
+
+            
         </div>
+        
     </ul>
 
 
@@ -38,6 +41,10 @@ ul {
 
 li {
     padding: 1.5%;
+}
+hr{
+    color: var(--colorOrigin);
+    border: 2px solid;
 }
 </style>
 
