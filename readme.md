@@ -14,6 +14,7 @@
     npm install vue-router
 
     Depois volte para o diretório raiz do projeto
+    cd ..
 ```
 
 ### PARA VER AS PAGINAS PELAS ROTAS
