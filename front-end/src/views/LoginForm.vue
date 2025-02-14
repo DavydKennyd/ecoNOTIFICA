@@ -95,8 +95,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: url('@/assets/image_fundo.jpg') no-repeat center center;
-  background-size: 90% auto;
+  background: url('@/assets/image_fundo.jpg') no-repeat center fixed;
+  background-size: cover;
   background-position: center;
   font-family: Arial, sans-serif;
   color: #fff;

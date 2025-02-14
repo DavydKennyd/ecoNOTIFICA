@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <img :src="require('@/assets/nova_variacao.png')" alt="logo" class="logo">
+    <img :src="require('@/assets/logo_login.png')" alt="logo" class="logo">
   </header>
   <div id="app" class="register-container">
     <div class="overlay"></div>
@@ -102,8 +102,9 @@ html, body {
   width: 100%;
   height: 100vh;
 }
+
 .logo {
-  max-width: 300px;
+  max-width: 265px;
   height: auto;
   margin: 0 auto;
   display: block;
@@ -122,11 +123,13 @@ html, body {
 
 /* Header */
 .header {
-  background: linear-gradient(to bottom, #016126, #06DB58, #03e75b);
+  background: linear-gradient(to bottom, #1B3C29, #355E3B, #4CAF50);
   width: 100%;
-  padding: 20px 0;
+  height: 50px;
+  padding: 20px;
   text-align: center;
   position: relative;
+  top:0
 }
 
 .header h1 {
@@ -144,7 +147,8 @@ html, body {
   width: 350px;
   z-index: 2;
   position: relative;
-  margin-top: 40px;
+  margin-top: 65px;
+  margin-left: 50px;
 }
 
 .register-form h2 {
