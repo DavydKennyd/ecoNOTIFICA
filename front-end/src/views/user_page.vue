@@ -79,7 +79,7 @@ export default {
       currentView: "add",
       username: localStorage.getItem('username'),  
       pontosDeColeta: [],
-      novoPonto: {  // 🔹 Estado para armazenar os dados do formulário
+      novoPonto: {
         nome: "",
         endereco: "",
         referencia: "",
@@ -129,7 +129,7 @@ export default {
         const novoPontoAdicionado = await response.json();
         this.pontosDeColeta.push(novoPontoAdicionado);
 
-        // 🔹 Resetando o formulário após adicionar
+        // Resetando o formulário após adicionar
         this.novoPonto = {
           nome: "",
           endereco: "",
@@ -155,7 +155,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 /* Estilos gerais */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
@@ -163,7 +162,6 @@ export default {
 body {
   font-family: "Nunito", sans-serif;
 }
-
 
 #perfil-page {
   display: flex;
@@ -297,7 +295,4 @@ form textarea {
   height: auto;
   border-radius: 5px;
 }
-/*COMENTANDO ISSO AQUI PARA PROVAR QUE SEI COMMITAR E ELIEZIO VER*/
-
-/*WELSON É DE JARDIM */
 </style>
