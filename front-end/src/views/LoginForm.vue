@@ -6,7 +6,6 @@
   <div id="app" class="login-container">
     <div class="overlay"></div>
     <div class="content">
-      <img :src="require('@/assets/image_planet.png')" alt="Earth" class="globe-img" />
       <form @submit.prevent="login" class="login-form">
         <h2>Login</h2>
         <div class="form-group">
@@ -72,6 +71,7 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
 }
 
 #app {
@@ -95,13 +95,14 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: url('@/assets/image_fundo.jpg') no-repeat center fixed;
+  background: url('@/assets/image_fundo.jpg') no-repeat center center;
   background-size: cover;
   background-position: center;
   font-family: Arial, sans-serif;
   color: #fff;
   position: relative;
   width: 100%;
+  height: 100vh;
 }
 
 .overlay {
@@ -111,14 +112,14 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 0;
+  z-index: 1;
 }
 
 .header {
   background: linear-gradient(to bottom, #1B3C29, #355E3B, #4CAF50);
   width: 100%;
   height: 50px;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
   position: relative;
   top: 0;
@@ -132,27 +133,15 @@ body {
 
 .content {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 30px;
   margin-top: 40px;
   margin-right: 90px;
   z-index: 1;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }}
 
   .header h1 {
     margin: 0;
@@ -172,49 +161,18 @@ body {
     z-index: 1;
   }
 
-  /*ANIMAÇÃO DA IMAGEM DA TERRA*/
-  @keyframes float {
-    0% {
-      transform: translateY(0);
-    }
-
-    50% {
-      transform: translateY(-10px);
-    }
-
-    100% {
-      transform: translateY(0);
-    }
-  }
-
-
-  /* Globo */
-
-  .globe img {
-    border-radius: 50%;
-    width: 500px;
-    height: 500px;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    animation: float 5s ease-in-out infinite;
-  }
-
-  .globe-img {
-    border-radius: 50%;
-    width: 500px;
-    height: 500px;
-    object-fit: cover;
-    animation: float 5s ease-in-out infinite;
-  }
-
   .login-form {
     background-color: rgba(0, 0, 0, 0.6);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    width: 300px;
-    z-index: 1;
+    width: 350px;
+    z-index: 2;
+    position: relative;
+    margin-top: 65px;
+    margin-left: 130px;
   }
+
 
   .login-form h2 {
     text-align: center;
@@ -225,7 +183,7 @@ body {
 
   .form-group {
     margin-bottom: 15px;
-    width: 285px;
+    width: 330px;
   }
 
   .form-group label {

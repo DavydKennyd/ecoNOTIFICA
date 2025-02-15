@@ -1,7 +1,7 @@
 <template>
   <div id="perfil-page">
     <div id="navbar">
-      <img :src="require('@/assets/logo_simples.png')" alt="LOGO" class="logo" />
+      <img :src="require('@/assets/logo_login.png')" alt="LOGO" class="logo" />
     </div>
     <div id="content-container">
       <Lateral_sidebar />
@@ -175,9 +175,9 @@ body {
 
 .logo {
   position: absolute;
-  top: 7px;
-  left: 25px;
-  width: 235px;
+  top: 12px;
+  left: 5px;
+  width: 210px;
   height: auto;
   z-index: 10;
   filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.7)); 
@@ -185,8 +185,8 @@ body {
 
 /* Navbar */
 #navbar {
-  height: 60px;
-  background-color:rgb(53, 94, 59); 
+  height: 65px;
+  background: linear-gradient(to bottom, #1B3C29, #355E3B, #4CAF50); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -220,6 +220,7 @@ body {
   gap: 10px;
   margin-bottom: 20px;
 }
+
 
 .btn {
   background-color: #4caf50;
@@ -270,7 +271,7 @@ form textarea {
 
 /* Pontos de Coleta */
 .ponto-de-coleta {
-  background-color: #E3F8E3;
+  background-color:rgba(255, 240, 233, 0.86);
   border: 2px solid #4CAF50;
   border-radius: 10px;
   padding: 20px;

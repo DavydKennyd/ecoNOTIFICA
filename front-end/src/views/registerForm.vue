@@ -126,7 +126,7 @@ html, body {
   background: linear-gradient(to bottom, #1B3C29, #355E3B, #4CAF50);
   width: 100%;
   height: 50px;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
   position: relative;
   top:0
