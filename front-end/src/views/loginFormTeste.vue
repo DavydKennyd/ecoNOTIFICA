@@ -10,7 +10,7 @@
   
   
     <header class="header">
-      <img :src="require('@/assets/setima_logo.png')" alt="LOGO-ECONOTIFICA" class="logo">
+      <img :src="require('@/assets/logo_login.png')" alt="LOGO-ECONOTIFICA" class="logo">
     </header>
   
   

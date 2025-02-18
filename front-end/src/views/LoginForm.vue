@@ -1,10 +1,12 @@
 <template>
 
+  
   <header class="header">
     <img :src="require('@/assets/logo_login.png')" alt="LOGO-ECONOTIFICA" class="logo">
   </header>
+  <div class="overlay"></div>
   <div id="app" class="login-container">
-    <div class="overlay"></div>
+
     <div class="content">
       <form @submit.prevent="login" class="login-form">
         <h2>Login</h2>
@@ -41,25 +43,25 @@ export default {
   },
   methods: {
     async login() {
-  try {
-    const response = await axios.post('http://localhost:5000/api/auth/login', {
-      email: this.email,
-      password: this.password,
-    });
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/login', {
+          email: this.email,
+          password: this.password,
+        });
 
-    const { token, user } = response.data;
+        const { token, user } = response.data;
 
-    // Armazenar o token e o nome de usuário no localStorage
-    localStorage.setItem('authToken', token);
-    localStorage.setItem('username', user.username);
+        // Armazenar o token e o nome de usuário no localStorage
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('username', user.username);
 
-    // Redirecionar para a página de perfil
-    this.$router.push('/perfil');
-  } catch (error) {
-    console.error(error.response?.data?.message || 'Erro ao realizar login');
-  }
-}
-},
+        // Redirecionar para a página de perfil
+        this.$router.push('/perfil');
+      } catch (error) {
+        console.error(error.response?.data?.message || 'Erro ao realizar login');
+      }
+    }
+  },
 
 };
 </script>
@@ -71,7 +73,7 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 #app {
@@ -81,7 +83,6 @@ body {
 </style>
 
 <style scoped>
-
 .logo {
   max-width: 265px;
   height: auto;
@@ -101,7 +102,8 @@ body {
   font-family: Arial, sans-serif;
   color: #fff;
   position: relative;
-  width: 100%;
+  top: -4.5vh;
+  width: 100vh;
   height: 100vh;
 }
 
@@ -143,14 +145,14 @@ body {
 }
 
 
-  .header h1 {
+/* .header h1 {
     margin: 0;
     font-size: 2.5rem;
     color: white;
-  }
+  } */
 
-  /* Conteúdo */
-  .content {
+/* Conteúdo */
+/* .content {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -159,64 +161,65 @@ body {
     margin-top: 40px;
     margin-right: 90px;
     z-index: 1;
-  }
+  } */
 
-  .login-form {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    width: 350px;
-    z-index: 2;
-    position: relative;
-    margin-top: 65px;
-    margin-left: 130px;
-  }
+.login-form {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 350px;
+  z-index: 2;
+  position: relative;
+  margin-top: 65px;
+  margin-left: 130px;
+  display: flex;
+}
 
 
-  .login-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #fff;
-    font-size: 1.5rem;
-  }
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 1.5rem;
+}
 
-  .form-group {
-    margin-bottom: 15px;
-    width: 330px;
-  }
+.form-group {
+  margin-bottom: 15px;
+  width: 330px;
+}
 
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 1rem;
-    color: #ccc;
-  }
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #ccc;
+}
 
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: #fff;
-  }
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #fff;
+}
 
-  .forgot-password {
-    display: block;
-    margin: 10px 0;
-    text-align: right;
-    font-size: 0.9rem;
-    color: #ccc;
-    text-decoration: none;
-  }
+.forgot-password {
+  display: block;
+  margin: 10px 0;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #ccc;
+  text-decoration: none;
+}
 
-  .forgot-password:hover {
-    text-decoration: underline;
-  }
+.forgot-password:hover {
+  text-decoration: underline;
+}
 
-  /* Botão */
-  /* .btn-login {
+/* Botão */
+/* .btn-login {
     width: 100%;
     padding: 10px;
     background-color: #28a745;
@@ -230,4 +233,5 @@ body {
   
   .btn-login:hover {
     background-color: #218838;
-  } */</style>
+  } */
+</style>
