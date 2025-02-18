@@ -79,6 +79,7 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
+  overflow-y: visible;
 }
 
 #app {
@@ -101,6 +102,7 @@ html, body {
   position: relative;
   width: 100%;
   height: 100vh;
+  top: -4.5vh;
 }
 
 .logo {
@@ -149,6 +151,7 @@ html, body {
   position: relative;
   margin-top: 65px;
   margin-left: 50px;
+  display: flex;
 }
 
 .register-form h2 {

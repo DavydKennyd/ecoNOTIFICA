@@ -54,7 +54,7 @@
 
     </section>
 
-
+<!-- 
     <section class="contabilização">
 
         <div>
@@ -70,7 +70,7 @@
             <p></p>
         </div>
 
-    </section>
+    </section> -->
 
     <section class="mapa">
 
@@ -141,6 +141,8 @@ h1 {
     flex-wrap: wrap;
     gap: 10px;
     padding: 5px;
+    margin-top: 0;
+    background-color: rgb(0, 0, 0);
 }
 
 .R {
