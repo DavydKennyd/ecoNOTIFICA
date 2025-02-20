@@ -147,12 +147,21 @@ export default {
         console.error("Erro ao adicionar ponto de coleta:", error);
         alert("Erro ao adicionar ponto de coleta!");
       }
+    },
+
+    toggleView(view) {
+      this.currentView = view;
+      
+      if (view === "add") {
+        this.adicionarPontoDeColeta(); // Chama a função automaticamente ao mudar para "add"
+      }
     }
   },
   mounted() {
     this.fetchPontosDeColeta();
   }
 };
+
 </script>
 
 <style scoped>
