@@ -6,7 +6,6 @@
         <div class="btn-expandir">
           <i class="bi bi-list"></i>
         </div><!--btn-expandir-->
-  
         <ul>
             <li class="item-perfil">
               <a href="/perfil">
@@ -71,9 +70,9 @@
   
   .btn-expandir{
     width: 100%;
-    padding-left: 10px;
+    padding-left: 1px; 
   }
-  
+
   .btn-expandir > i{
       color: white;
       font-size: 20px;
