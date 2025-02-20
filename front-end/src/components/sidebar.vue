@@ -9,7 +9,7 @@
   
         <ul>
             <li class="item-perfil">
-              <a href="#Perfil">
+              <a href="/perfil">
                 <span class="icon"><i class="bi bi-person-square"></i></span>
                 <span class="txt-link">Perfil</span>
               </a>
@@ -17,7 +17,7 @@
   
   
             <li class="item-perfil">
-              <a href="#Sobre">
+              <a href="/sobre">
                 <span class="icon"><i class="bi bi-exclamation-circle"></i></span>
                 <span class="txt-link">Sobre</span>
               </a>
@@ -25,7 +25,7 @@
             
             
             <li class="item-perfil">
-              <a href="#contato">
+              <a href="/contato">
                 <span class="icon"><i class="bi bi-telephone"></i></span>
                 <span class="txt-link">Contato</span>
               </a>
@@ -33,7 +33,7 @@
   
   
             <li class="item-perfil">
-              <a href="#Ajuda">
+              <a href="/ajuda">
                 <span class="icon"><i class="bi bi-question-circle-fill"></i></span>
                 <span class="txt-link">Ajuda</span>
               </a>
