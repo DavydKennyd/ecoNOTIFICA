@@ -68,6 +68,24 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal para detalhes do ponto de coleta -->
+    <div v-if="pontoDetalhado" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="fecharModal">&times;</span>
+        <h3>Detalhes do Ponto de Coleta</h3>
+        <p><strong>Nome:</strong> {{ pontoDetalhado.nome }}</p>
+        <p><strong>Endereço:</strong> {{ pontoDetalhado.endereco }}</p>
+        <p><strong>Referência:</strong> {{ pontoDetalhado.referencia }}</p>
+        <p><strong>Tipo de Material:</strong> {{ pontoDetalhado.tipoMaterial }}</p>
+        <p><strong>Responsável:</strong> {{ pontoDetalhado.responsavel }}</p>
+        <p><strong>Contato:</strong> {{ pontoDetalhado.contato }}</p>
+        <p><strong>Descrição:</strong> {{ pontoDetalhado.descricao }}</p>
+        <div v-if="pontoDetalhado.fotoVideo">
+          <img :src="pontoDetalhado.fotoVideo" alt="Foto do ponto de coleta" class="media" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -93,7 +111,8 @@ export default {
         contato: "",
         fotoVideo: null,
         descricao: "",
-      }
+      },
+      pontoDetalhado: null // Adicione esta linha
     };
   },
   methods: {
@@ -101,14 +120,19 @@ export default {
       try {
         const response = await fetch('http://localhost:5000/api/pontos/pontos-de-coleta');
         const data = await response.json();
+        console.log('Pontos de Coleta:', data);
 
-        // Converte a imagem binária em URL
-        this.pontosDeColeta = data.map(ponto => {
-          if (ponto.fotoVideo && ponto.fotoVideo instanceof Blob) {
-            ponto.fotoVideo = URL.createObjectURL(ponto.fotoVideo);
-          }
-          return ponto;
-        });
+        // Mapeia os dados para o formato esperado
+        this.pontosDeColeta = data.map(ponto => ({
+          nome: ponto.name,
+          endereco: ponto.address,
+          referencia: ponto.reference,
+          tipoMaterial: ponto.material_type,
+          responsavel: ponto.responsible_name,
+          contato: ponto.contact_info,
+          fotoVideo: ponto.media_url, // Já está em base64
+          descricao: ponto.description
+        }));
       } catch (error) {
         console.error('Erro ao buscar pontos de coleta:', error);
       }
@@ -185,16 +209,11 @@ export default {
     },
 
     detalharPonto(index) {
-      const ponto = this.pontosDeColeta[index];
-      alert(`Detalhes do ponto:\n
-        Nome: ${ponto.nome}\n
-        Endereço: ${ponto.endereco}\n
-        Referência: ${ponto.referencia}\n
-        Tipo de Material: ${ponto.tipoMaterial}\n
-        Responsável: ${ponto.responsavel}\n
-        Contato: ${ponto.contato}\n
-        Descrição: ${ponto.descricao}
-      `);
+      this.pontoDetalhado = this.pontosDeColeta[index];
+    },
+
+    fecharModal() {
+      this.pontoDetalhado = null;
     }
   },
   mounted() {
@@ -341,5 +360,39 @@ form textarea {
   max-width: 400px;
   height: auto;
   border-radius: 5px;
+}
+
+/* Estilos do modal */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: red;
 }
 </style>
