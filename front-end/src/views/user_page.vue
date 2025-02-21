@@ -10,6 +10,8 @@
           <button class="btn" @click="toggleView('add')">Adicionar ponto de coleta</button>
           <button class="btn" @click="toggleView('search')">Buscar ponto de coleta</button>
         </div>
+
+        <!-- Formulário de adicionar ponto -->
         <div v-if="currentView === 'add'" class="form-container">
           <h3>Informações Adicionais</h3>
           <form @submit.prevent="adicionarPontoDeColeta">
@@ -32,15 +34,18 @@
             <input type="text" v-model="novoPonto.contato" placeholder="Informações de contato" required />
 
             <label>Foto/Video:</label>
-            <input type="file" @change="(event) => novoPonto.fotoVideo = event.target.files[0]" />
+            <input 
+              type="file" 
+              @change="(event) => novoPonto.fotoVideo = event.target.files[0]" 
+              ref="fileInput"
+            />
 
             <label>Descrição:</label>
             <textarea v-model="novoPonto.descricao" placeholder="Adicione uma descrição"></textarea>
-
-            <button type="submit" class="btn">Adicionar</button>
           </form>
         </div>
 
+        <!-- Lista de pontos de coleta -->
         <div v-if="currentView === 'search'" class="form-container">
           <h3>Pontos de Coleta</h3>
           <div 
@@ -54,7 +59,7 @@
             <p>📋 Tipo de Material: {{ ponto.tipoMaterial }}</p>
             <p>👤 Responsável: {{ ponto.responsavel }}</p>
             <p>📞 Contato: {{ ponto.contato }}</p>
-            <div v-if="ponto.fotoVideo !== 'Não há mídia disponível'">
+            <div v-if="ponto.fotoVideo">
               <img :src="ponto.fotoVideo" alt="Foto do ponto de coleta" class="media" />
             </div>
             <p>📝 Descrição: {{ ponto.descricao }}</p>
@@ -96,7 +101,14 @@ export default {
       try {
         const response = await fetch('http://localhost:5000/api/pontos/pontos-de-coleta');
         const data = await response.json();
-        this.pontosDeColeta = data;
+
+        // Converte a imagem binária em URL
+        this.pontosDeColeta = data.map(ponto => {
+          if (ponto.fotoVideo && ponto.fotoVideo instanceof Blob) {
+            ponto.fotoVideo = URL.createObjectURL(ponto.fotoVideo);
+          }
+          return ponto;
+        });
       } catch (error) {
         console.error('Erro ao buscar pontos de coleta:', error);
       }
@@ -104,6 +116,17 @@ export default {
 
     async adicionarPontoDeColeta() {
       try {
+        if (
+          !this.novoPonto.nome ||
+          !this.novoPonto.endereco ||
+          !this.novoPonto.tipoMaterial ||
+          !this.novoPonto.responsavel ||
+          !this.novoPonto.contato
+        ) {
+          alert("Por favor, preencha todos os campos obrigatórios.");
+          return;
+        }
+
         const formData = new FormData();
         formData.append("nome", this.novoPonto.nome);
         formData.append("endereco", this.novoPonto.endereco);
@@ -127,7 +150,7 @@ export default {
         }
 
         const novoPontoAdicionado = await response.json();
-        this.pontosDeColeta.push(novoPontoAdicionado);
+        this.pontosDeColeta.push(novoPontoAdicionado); // Adiciona o novo ponto à lista
 
         // Resetando o formulário após adicionar
         this.novoPonto = {
@@ -140,6 +163,7 @@ export default {
           fotoVideo: null,
           descricao: "",
         };
+        this.$refs.fileInput.value = ""; // Resetar o input de arquivo
 
         alert("Ponto de coleta adicionado com sucesso!");
         this.currentView = "search"; // Alterando a tela para visualizar os pontos adicionados
@@ -150,18 +174,33 @@ export default {
     },
 
     toggleView(view) {
-      this.currentView = view;
-      
       if (view === "add") {
-        this.adicionarPontoDeColeta(); // Chama a função automaticamente ao mudar para "add"
+        this.adicionarPontoDeColeta(); // Adiciona o ponto de coleta
+      } else {
+        this.currentView = view; // Alterna para a visualização de busca
+        if (view === "search") {
+          this.fetchPontosDeColeta(); // Recarrega os pontos ao clicar em buscar
+        }
       }
+    },
+
+    detalharPonto(index) {
+      const ponto = this.pontosDeColeta[index];
+      alert(`Detalhes do ponto:\n
+        Nome: ${ponto.nome}\n
+        Endereço: ${ponto.endereco}\n
+        Referência: ${ponto.referencia}\n
+        Tipo de Material: ${ponto.tipoMaterial}\n
+        Responsável: ${ponto.responsavel}\n
+        Contato: ${ponto.contato}\n
+        Descrição: ${ponto.descricao}
+      `);
     }
   },
   mounted() {
     this.fetchPontosDeColeta();
   }
 };
-
 </script>
 
 <style scoped>
@@ -227,7 +266,6 @@ body {
   gap: 10px;
   margin-bottom: 20px;
 }
-
 
 .btn {
   background-color: #4caf50;
