@@ -3,19 +3,6 @@ const multer = require('multer');
 const router = express.Router();
 const pool = require('../config/db');
 
-// Configuração do multer para processar o campo "fotoVideo"
-const upload = multer({
-  storage: multer.memoryStorage(), // Armazena o arquivo na memória (ou configure para salvar no disco)
-  fileFilter: (req, file, cb) => {
-    // Verifique o tipo de arquivo, se necessário
-    if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/')) {
-      cb(null, true); // Aceita o arquivo
-    } else {
-      cb(new Error('Tipo de arquivo não suportado!'), false); // Rejeita o arquivo
-    }
-  }
-});
-
 // Rota para buscar os pontos de coleta
 router.get('/pontos-de-coleta', async (req, res) => {
   try {
