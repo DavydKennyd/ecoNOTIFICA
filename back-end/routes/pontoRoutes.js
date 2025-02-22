@@ -17,6 +17,17 @@ const upload = multer({
 });
 
 // Rota para buscar os pontos de coleta
+router.get('/pontos-de-coleta', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM collection_points');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar pontos de coleta:', error);
+    res.status(500).json({ error: 'Erro ao buscar pontos de coleta' });
+  }
+});
+
+// Rota para adicionar um novo ponto de coleta
 router.post('/pontos-de-coleta', upload.single('fotoVideo'), async (req, res) => {
   try {
     const { nome, endereco, referencia, tipoMaterial, responsavel, contato, descricao } = req.body;
