@@ -42,6 +42,8 @@
 
             <label>Descrição:</label>
             <textarea v-model="novoPonto.descricao" placeholder="Adicione uma descrição"></textarea>
+
+            <center><button type="submit" class="btn-register botao--">CADASTRAR</button></center>
           </form>
         </div>
 
@@ -53,36 +55,19 @@
             v-for="(ponto, index) in pontosDeColeta" 
             :key="index"
           >
-            <h4>{{ ponto.nome }}</h4>
-            <p>📍 Endereço: {{ ponto.endereco }}</p>
-            <p>🗺️ Referência: {{ ponto.referencia }}</p>
-            <p>📋 Tipo de Material: {{ ponto.tipoMaterial }}</p>
-            <p>👤 Responsável: {{ ponto.responsavel }}</p>
-            <p>📞 Contato: {{ ponto.contato }}</p>
-            <div v-if="ponto.fotoVideo">
-              <img :src="ponto.fotoVideo" alt="Foto do ponto de coleta" class="media" />
+            <h4>{{ ponto.name }}</h4>
+            <p>📍 Endereço: {{ ponto.address }}</p>
+            <p>🗺️ Referência: {{ ponto.reference }}</p>
+            <p>📋 Tipo de Material: {{ ponto.material_type }}</p>
+            <p>👤 Responsável: {{ ponto.responsible_name }}</p>
+            <p>📞 Contato: {{ ponto.contact_info }}</p>
+            <p>👤 Cadastrado por: {{ ponto.username }}</p>
+            <div v-if="ponto.media_url">
+              <img :src="ponto.media_url" alt="Foto do ponto de coleta" class="media" />
             </div>
-            <p>📝 Descrição: {{ ponto.descricao }}</p>
+            <p>📝 Descrição: {{ ponto.description }}</p>
             <button @click="detalharPonto(index)">Detalhar</button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal para detalhes do ponto de coleta -->
-    <div v-if="pontoDetalhado" class="modal">
-      <div class="modal-content">
-        <span class="close" @click="fecharModal">&times;</span>
-        <h3>Detalhes do Ponto de Coleta</h3>
-        <p><strong>Nome:</strong> {{ pontoDetalhado.nome }}</p>
-        <p><strong>Endereço:</strong> {{ pontoDetalhado.endereco }}</p>
-        <p><strong>Referência:</strong> {{ pontoDetalhado.referencia }}</p>
-        <p><strong>Tipo de Material:</strong> {{ pontoDetalhado.tipoMaterial }}</p>
-        <p><strong>Responsável:</strong> {{ pontoDetalhado.responsavel }}</p>
-        <p><strong>Contato:</strong> {{ pontoDetalhado.contato }}</p>
-        <p><strong>Descrição:</strong> {{ pontoDetalhado.descricao }}</p>
-        <div v-if="pontoDetalhado.fotoVideo">
-          <img :src="pontoDetalhado.fotoVideo" alt="Foto do ponto de coleta" class="media" />
         </div>
       </div>
     </div>
@@ -100,7 +85,6 @@ export default {
   data() {
     return {
       currentView: "add",
-      username: localStorage.getItem('username'),  
       pontosDeColeta: [],
       novoPonto: {
         nome: "",
@@ -112,7 +96,6 @@ export default {
         fotoVideo: null,
         descricao: "",
       },
-      pontoDetalhado: null // Adicione esta linha
     };
   },
   methods: {
@@ -121,18 +104,7 @@ export default {
         const response = await fetch('http://localhost:5000/api/pontos/pontos-de-coleta');
         const data = await response.json();
         console.log('Pontos de Coleta:', data);
-
-        // Mapeia os dados para o formato esperado
-        this.pontosDeColeta = data.map(ponto => ({
-          nome: ponto.name,
-          endereco: ponto.address,
-          referencia: ponto.reference,
-          tipoMaterial: ponto.material_type,
-          responsavel: ponto.responsible_name,
-          contato: ponto.contact_info,
-          fotoVideo: ponto.media_url, // Já está em base64
-          descricao: ponto.description
-        }));
+        this.pontosDeColeta = data;
       } catch (error) {
         console.error('Erro ao buscar pontos de coleta:', error);
       }
@@ -140,17 +112,7 @@ export default {
 
     async adicionarPontoDeColeta() {
       try {
-        if (
-          !this.novoPonto.nome ||
-          !this.novoPonto.endereco ||
-          !this.novoPonto.tipoMaterial ||
-          !this.novoPonto.responsavel ||
-          !this.novoPonto.contato
-        ) {
-          alert("Por favor, preencha todos os campos obrigatórios.");
-          return;
-        }
-
+        const token = localStorage.getItem('authToken');
         const formData = new FormData();
         formData.append("nome", this.novoPonto.nome);
         formData.append("endereco", this.novoPonto.endereco);
@@ -166,7 +128,10 @@ export default {
 
         const response = await fetch('http://localhost:5000/api/pontos/pontos-de-coleta', {
           method: 'POST',
-          body: formData
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
 
         if (!response.ok) {
@@ -174,9 +139,9 @@ export default {
         }
 
         const novoPontoAdicionado = await response.json();
-        this.pontosDeColeta.push(novoPontoAdicionado); // Adiciona o novo ponto à lista
+        this.pontosDeColeta.push(novoPontoAdicionado);
 
-        // Resetando o formulário após adicionar
+        // Resetar formulário
         this.novoPonto = {
           nome: "",
           endereco: "",
@@ -187,10 +152,10 @@ export default {
           fotoVideo: null,
           descricao: "",
         };
-        this.$refs.fileInput.value = ""; // Resetar o input de arquivo
+        this.$refs.fileInput.value = "";
 
         alert("Ponto de coleta adicionado com sucesso!");
-        this.currentView = "search"; // Alterando a tela para visualizar os pontos adicionados
+        this.currentView = "search";
       } catch (error) {
         console.error("Erro ao adicionar ponto de coleta:", error);
         alert("Erro ao adicionar ponto de coleta!");
@@ -198,23 +163,11 @@ export default {
     },
 
     toggleView(view) {
-      if (view === "add") {
-        this.adicionarPontoDeColeta(); // Adiciona o ponto de coleta
-      } else {
-        this.currentView = view; // Alterna para a visualização de busca
-        if (view === "search") {
-          this.fetchPontosDeColeta(); // Recarrega os pontos ao clicar em buscar
-        }
+      this.currentView = view;
+      if (view === "search") {
+        this.fetchPontosDeColeta();
       }
     },
-
-    detalharPonto(index) {
-      this.pontoDetalhado = this.pontosDeColeta[index];
-    },
-
-    fecharModal() {
-      this.pontoDetalhado = null;
-    }
   },
   mounted() {
     this.fetchPontosDeColeta();

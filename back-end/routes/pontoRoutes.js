@@ -2,11 +2,34 @@ const express = require('express');
 const multer = require('multer');
 const router = express.Router();
 const pool = require('../config/db');
+const jwt = require('jsonwebtoken');
+
+// Configuração do multer para upload de arquivos
+const upload = multer();
+
+// Middleware para verificar o token JWT
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET || 'minha-chave-secreta', (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
 
 // Rota para buscar os pontos de coleta
 router.get('/pontos-de-coleta', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM collection_points');
+    const query = `
+      SELECT cp.*, u.username 
+      FROM collection_points cp
+      JOIN users u ON cp.user_id = u.id;
+    `;
+    const result = await pool.query(query);
     res.json(result.rows);
   } catch (error) {
     console.error('Erro ao buscar pontos de coleta:', error);
@@ -15,7 +38,7 @@ router.get('/pontos-de-coleta', async (req, res) => {
 });
 
 // Rota para adicionar um novo ponto de coleta
-router.post('/pontos-de-coleta', upload.single('fotoVideo'), async (req, res) => {
+router.post('/pontos-de-coleta', authenticateToken, upload.single('fotoVideo'), async (req, res) => {
   try {
     const { nome, endereco, referencia, tipoMaterial, responsavel, contato, descricao } = req.body;
     const fotoVideo = req.file ? req.file.buffer.toString('base64') : null; // Converte o arquivo para base64
@@ -27,7 +50,7 @@ router.post('/pontos-de-coleta', upload.single('fotoVideo'), async (req, res) =>
     `;
 
     const values = [
-      1, // Defina o user_id corretamente (pode ser dinâmico)
+      req.user.userId, // ID do usuário autenticado
       nome,
       endereco,
       referencia,

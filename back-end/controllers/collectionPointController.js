@@ -2,7 +2,10 @@ const CollectionPoint = require('../models/CollectionPoint');
 
 exports.addCollectionPoint = async (req, res) => {
   try {
-    const newPoint = await CollectionPoint.create(req.body);
+    const newPoint = await CollectionPoint.create({
+      ...req.body,
+      user_id: req.user.userId // Adiciona o ID do usuário autenticado
+    });
     res.status(201).json({ message: 'Ponto de coleta cadastrado com sucesso!', data: newPoint });
   } catch (error) {
     console.error(error);

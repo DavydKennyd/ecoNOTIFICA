@@ -8,9 +8,15 @@ class CollectionPoint {
       RETURNING *;
     `;
     const values = [
-      data.user_id, data.name, data.address, data.reference,
-      data.material_type, data.responsible_name, data.contact_info,
-      data.media_url, data.description
+      data.user_id, 
+      data.name, 
+      data.address, 
+      data.reference,
+      data.material_type, 
+      data.responsible_name, 
+      data.contact_info,
+      data.media_url, 
+      data.description
     ];
 
     const { rows } = await pool.query(query, values);
@@ -18,7 +24,11 @@ class CollectionPoint {
   }
 
   static async findAll() {
-    const query = 'SELECT * FROM collection_points;';
+    const query = `
+      SELECT cp.*, u.username 
+      FROM collection_points cp
+      JOIN users u ON cp.user_id = u.id;
+    `;
     const { rows } = await pool.query(query);
     return rows;
   }
