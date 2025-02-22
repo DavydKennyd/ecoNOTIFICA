@@ -66,7 +66,25 @@
               <img :src="ponto.media_url" alt="Foto do ponto de coleta" class="media" />
             </div>
             <p>📝 Descrição: {{ ponto.description }}</p>
-            <button @click="detalharPonto(index)">Detalhar</button>
+            <button @click="detalharPonto(ponto)">Detalhar</button>
+          </div>
+        </div>
+
+        <!-- Modal para detalhes do ponto de coleta -->
+        <div v-if="pontoDetalhado" class="modal">
+          <div class="modal-content">
+            <span class="close" @click="fecharModal">&times;</span>
+            <h3>Detalhes do Ponto de Coleta</h3>
+            <p><strong>Nome:</strong> {{ pontoDetalhado.name }}</p>
+            <p><strong>Endereço:</strong> {{ pontoDetalhado.address }}</p>
+            <p><strong>Referência:</strong> {{ pontoDetalhado.reference }}</p>
+            <p><strong>Tipo de Material:</strong> {{ pontoDetalhado.material_type }}</p>
+            <p><strong>Responsável:</strong> {{ pontoDetalhado.responsible_name }}</p>
+            <p><strong>Contato:</strong> {{ pontoDetalhado.contact_info }}</p>
+            <p><strong>Descrição:</strong> {{ pontoDetalhado.description }}</p>
+            <div v-if="pontoDetalhado.media_url">
+              <img :src="pontoDetalhado.media_url" alt="Foto do ponto de coleta" class="media" />
+            </div>
           </div>
         </div>
       </div>
@@ -96,6 +114,7 @@ export default {
         fotoVideo: null,
         descricao: "",
       },
+      pontoDetalhado: null,
     };
   },
   methods: {
@@ -103,7 +122,6 @@ export default {
       try {
         const response = await fetch('http://localhost:5000/api/pontos/pontos-de-coleta');
         const data = await response.json();
-        console.log('Pontos de Coleta:', data);
         this.pontosDeColeta = data;
       } catch (error) {
         console.error('Erro ao buscar pontos de coleta:', error);
@@ -168,6 +186,14 @@ export default {
         this.fetchPontosDeColeta();
       }
     },
+
+    detalharPonto(ponto) {
+      this.pontoDetalhado = ponto;
+    },
+
+    fecharModal() {
+      this.pontoDetalhado = null;
+    }
   },
   mounted() {
     this.fetchPontosDeColeta();
