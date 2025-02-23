@@ -69,4 +69,25 @@ router.post('/pontos-de-coleta', authenticateToken, upload.single('fotoVideo'), 
   }
 });
 
+// Rota para buscar os pontos de coleta do usuário
+router.get('/meus-pontos', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId; // Obtém o ID do usuário a partir do token JWT
+
+    // Query para buscar os pontos de coleta do usuário
+    const query = `
+      SELECT name, address, material_type
+      FROM collection_points
+      WHERE user_id = $1;
+    `;
+
+    const result = await pool.query(query, [userId]);
+
+    res.json(result.rows); // Retorna a lista de pontos de coleta
+  } catch (error) {
+    console.error('Erro ao buscar pontos de coleta:', error);
+    res.status(500).json({ error: 'Erro ao buscar pontos de coleta' });
+  }
+});
+
 module.exports = router;
