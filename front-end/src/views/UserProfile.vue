@@ -3,12 +3,14 @@
     <div id="navbar">
       <img :src="require('@/assets/logo_login.png')" alt="LOGO" class="logo" />
     </div>
+
+    <button class="btn-logout" @click="logout">Sair</button>
+    
     <div id="content-container">
       <Lateral_sidebar />
       <div id="content">
         <div class="header">
           <h1>Perfil</h1>
-          <button class="btn-logout" @click="logout">Sair</button>
         </div>
         <div class="container-wrapper">
           <div class="container">
@@ -212,13 +214,14 @@ body {
 }
 
 #content {
-  margin-left: 100px;
-  padding: 20px;
+  margin-left: 0px;
+  padding: 50px;
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center; /* Centraliza o conteúdo horizontalmente */
+  margin-top: -250px;
 }
 
 .header {
@@ -228,6 +231,9 @@ body {
   width: 100%;
   max-width: 800px; /* Limita a largura do conteúdo */
   margin-bottom: 20px;
+}
+.header h1{
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
 }
 
 .container-wrapper {
@@ -271,7 +277,7 @@ form label {
 }
 
 form input {
-  width: 100%;
+  width: 300px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -285,6 +291,20 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.btn-logout {
+  position: fixed;
+  top: 75px; /* Logo abaixo do navbar */
+  right: 20px;
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 9999;
+}
+
 
 button:hover {
   background-color: #45a049;
