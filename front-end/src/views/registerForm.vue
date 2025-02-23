@@ -127,12 +127,14 @@ html, body {
 .header {
   background: linear-gradient(to bottom, #1B3C29, #355E3B, #4CAF50);
   width: 100%;
-  height: 50px;
-  padding: 15px;
+  height: 80px;
+  padding: 10px;
   text-align: center;
   position: relative;
   top:0
 }
+
+
 
 .header h1 {
   margin: 0;
