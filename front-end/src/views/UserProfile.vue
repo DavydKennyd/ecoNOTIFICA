@@ -121,35 +121,40 @@ export default {
 
     // Altera a senha do usuário
     async alterarSenha() {
-      if (this.novaSenha !== this.confirmarSenha) {
-        alert('As senhas não coincidem.');
-        return;
-      }
+    if (this.novaSenha !== this.confirmarSenha) {
+      alert('As senhas não coincidem.');
+      return;
+    }
 
-      try {
-        const token = localStorage.getItem('authToken');
-        await axios.post(
-          'http://localhost:5000/api/auth/alterar-senha',
-          {
-            senhaAtual: this.senhaAtual,
-            novaSenha: this.novaSenha,
+    try {
+      const token = localStorage.getItem('authToken');
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/alterar-senha',
+        {
+          senhaAtual: this.senhaAtual,
+          novaSenha: this.novaSenha,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        alert('Senha alterada com sucesso!');
-        this.senhaAtual = '';
-        this.novaSenha = '';
-        this.confirmarSenha = '';
-        this.mostrarFormularioSenha = false; // Oculta o formulário após a alteração
-      } catch (error) {
-        console.error('Erro ao alterar senha:', error);
-        alert('Erro ao alterar senha. Verifique a senha atual.');
+        }
+      );
+
+      alert(response.data.message); // Exibe a mensagem de sucesso
+      this.senhaAtual = '';
+      this.novaSenha = '';
+      this.confirmarSenha = '';
+      this.mostrarFormularioSenha = false; // Oculta o formulário após a alteração
+    } catch (error) {
+      console.error('Erro ao alterar senha:', error);
+      if (error.response && error.response.data.error) {
+        alert(error.response.data.error); // Exibe a mensagem de erro do backend
+      } else {
+        alert('Erro ao alterar senha. Tente novamente mais tarde.');
       }
-    },
+    }
+  },
 
     // Faz logout do usuário
     logout() {
