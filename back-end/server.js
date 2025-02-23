@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const pontoRoutes = require('./routes/pontoRoutes');
+const path = require('path');
 
 const app = express();
 
@@ -18,6 +19,9 @@ app.use(express.urlencoded({ extended: true })); // Para processar FormData
 // Rotas
 app.use('/api/auth', authRoutes); // Rotas relacionadas à autenticação
 app.use('/api/pontos', pontoRoutes); // Rotas relacionadas aos pontos de coleta
+
+// Servir a pasta "uploads" como um recurso estático
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Inicia o servidor
 const PORT = 5000;

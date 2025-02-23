@@ -83,7 +83,7 @@
             <p><strong>Contato:</strong> {{ pontoDetalhado.contact_info }}</p>
             <p><strong>Descrição:</strong> {{ pontoDetalhado.description }}</p>
             <div v-if="pontoDetalhado.media_url">
-              <img :src="pontoDetalhado.media_url" alt="Foto do ponto de coleta" class="media" />
+              <img :src="`/uploads/${pontoDetalhado.media_url}`" alt="Foto do ponto de coleta" class="media" />
             </div>
           </div>
         </div>
