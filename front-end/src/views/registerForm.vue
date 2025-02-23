@@ -5,7 +5,8 @@
     </header>
     <div class="overlay"></div>
     <div class="register-container">
-      <div class="content">
+      
+      <div v-if="!isLoading" class="content">
         <form class="register-form" @submit.prevent="register">
           <h2>Cadastro</h2>
           <div class="form-group">
@@ -29,6 +30,23 @@
           </router-link>
           <button type="submit" class="btn-register">CADASTRAR</button>
         </form>
+
+        
+        <div v-if="showSuccessMessage" class="success-message">
+          <i class="fas fa-check-circle"></i>
+          <p>Cadastro realizado com sucesso!</p>
+        </div>
+
+        
+        <div v-if="showErrorMessage" class="error-message">
+          <i class="fas fa-times-circle"></i>
+          <p>{{ errorMessage }}</p>
+        </div>
+      </div>
+
+      
+      <div v-if="isLoading" class="loading-spinner">
+        <div class="spinner"></div>
       </div>
     </div>
   </div>
@@ -45,12 +63,20 @@ export default {
       email: '',
       password: '',
       confirmPassword: '',
+      showSuccessMessage: false, 
+      showErrorMessage: false,  
+      errorMessage: '',         
+      isLoading: false,        
     };
   },
   methods: {
     async register() {
       if (this.password !== this.confirmPassword) {
-        alert("As senhas não coincidem.");
+        this.showErrorMessage = true;
+        this.errorMessage = "As senhas não coincidem.";
+        setTimeout(() => {
+          this.showErrorMessage = false;
+        }, 3000); 
         return;
       }
       try {
@@ -59,12 +85,28 @@ export default {
           email: this.email,
           password: this.password,
         });
-        console.log(response.data); // Resposta de sucesso ou erro
-        alert("Cadastro realizado com sucesso!");
-        this.$router.push('/login'); // Redireciona para a tela de login
+        console.log(response.data); 
+
+        
+        this.showSuccessMessage = true;
+
+        
+        setTimeout(() => {
+          this.showSuccessMessage = false; 
+          this.isLoading = true; 
+        }, 2000);
+
+        
+        setTimeout(() => {
+          this.$router.push('/login');
+        }, 3000);
       } catch (error) {
         console.error(error);
-        alert("Erro ao realizar cadastro. Tente novamente.");
+        this.showErrorMessage = true;
+        this.errorMessage = error.response?.data?.message || "Erro ao realizar cadastro. Tente novamente.";
+        setTimeout(() => {
+          this.showErrorMessage = false;
+        }, 3000); 
       }
     },
   },
@@ -136,7 +178,7 @@ html, body {
   width: 100%;
   height: 100%;
   z-index: 2;
-  margin-top: 100px; /* Adicionado para descer o formulário */
+  margin-top: 100px;
 }
 
 .register-form {
@@ -204,5 +246,113 @@ html, body {
 
 .btn-register:hover {
   background-color: #218838;
+}
+
+
+.success-message {
+  position: fixed;
+  top: 85px; 
+  right: 20px; 
+  background-color: rgba(45, 170, 13, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: #fff;
+  z-index: 1000;
+  animation: fadeInScale 0.5s ease-in-out forwards;
+}
+
+.success-message i {
+  font-size: 48px;
+  color: #4CAF50;
+  margin-bottom: 10px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.success-message p {
+  font-size: 18px;
+  margin: 0;
+}
+
+
+.error-message {
+  position: fixed;
+  top: 85px; 
+  right: 20px; 
+  background-color: rgba(255, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: #fff;
+  z-index: 1000;
+  animation: fadeInScale 0.5s ease-in-out forwards;
+}
+
+.error-message i {
+  font-size: 48px;
+  color: #fff;
+  margin-bottom: 10px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.error-message p {
+  font-size: 18px;
+  margin: 0;
+}
+
+
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #4CAF50;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 </style>
