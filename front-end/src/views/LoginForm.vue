@@ -18,6 +18,10 @@
           </div>
           <a href="#" class="forgot-password">Esqueceu a senha?</a>
           <button type="submit" class="btn-login">ENTRAR</button>
+          <!-- Link para cadastro -->
+          <router-link to="/cadastro" class="register-link">
+            Não tem cadastro? <span>Clique aqui</span>
+          </router-link>
         </form>
       </div>
     </div>
@@ -186,9 +190,29 @@ body {
   font-size: 1.1rem;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
 .btn-login:hover {
   background-color: #218838;
+}
+
+/* Estilo do link de cadastro */
+.register-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #ccc;
+  text-align: center;
+  text-decoration: none;
+}
+
+.register-link span {
+  color: #06DB58;
+  cursor: pointer;
+}
+
+.register-link:hover span {
+  text-decoration: underline;
 }
 </style>
