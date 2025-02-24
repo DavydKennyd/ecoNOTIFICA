@@ -90,7 +90,7 @@ router.get('/meus-pontos', authenticateToken, async (req, res) => {
 
     // Query para buscar os pontos de coleta do usuário
     const query = `
-      SELECT name, address, material_type
+      SELECT id, name, address, material_type
       FROM collection_points
       WHERE user_id = $1;
     `;
@@ -101,6 +101,31 @@ router.get('/meus-pontos', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Erro ao buscar pontos de coleta:', error);
     res.status(500).json({ error: 'Erro ao buscar pontos de coleta' });
+  }
+});
+
+// Rota para excluir um ponto de coleta
+router.delete('/pontos-de-coleta/:id', authenticateToken, async (req, res) => {
+  const pontoId = req.params.id; // ID do ponto de coleta
+  const userId = req.user.userId; // ID do usuário autenticado
+
+  try {
+    // Verifica se o ponto de coleta pertence ao usuário
+    const verifyQuery = 'SELECT * FROM collection_points WHERE id = $1 AND user_id = $2';
+    const verifyResult = await pool.query(verifyQuery, [pontoId, userId]);
+
+    if (verifyResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Ponto de coleta não encontrado ou não pertence ao usuário' });
+    }
+
+    // Exclui o ponto de coleta
+    const deleteQuery = 'DELETE FROM collection_points WHERE id = $1';
+    await pool.query(deleteQuery, [pontoId]);
+
+    res.json({ message: 'Ponto de coleta excluído com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao excluir ponto de coleta:', error);
+    res.status(500).json({ error: 'Erro ao excluir ponto de coleta' });
   }
 });
 

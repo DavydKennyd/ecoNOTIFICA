@@ -28,6 +28,7 @@
                   <p><strong>Nome:</strong> {{ ponto.name }}</p>
                   <p><strong>Endereço:</strong> {{ ponto.address }}</p>
                   <p><strong>Material:</strong> {{ ponto.material_type }}</p>
+                  <button @click="excluirPonto(ponto.id)">Excluir</button> <!-- Botão de exclusão -->
                 </div>
               </div>
               <p v-else>Nenhum ponto de coleta cadastrado.</p>
@@ -157,6 +158,35 @@ export default {
       }
     }
   },
+
+    async excluirPonto(pontoId) {
+    console.log('ID do ponto de coleta:', pontoId); 
+    if (confirm('Tem certeza que deseja excluir este ponto de coleta?')) {
+      try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch(`http://localhost:5000/api/pontos/pontos-de-coleta/${pontoId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao excluir ponto de coleta');
+        }
+
+        const data = await response.json();
+        alert(data.message); // Exibe a mensagem de sucesso
+
+        // Atualiza a lista de pontos de coleta
+        await this.carregarPontosDeColeta(); // Recarrega a lista de pontos de coleta
+      } catch (error) {
+        console.error('Erro ao excluir ponto de coleta:', error);
+        alert('Erro ao excluir ponto de coleta. Tente novamente mais tarde.');
+      }
+    }
+  },
+
 
     // Faz logout do usuário
     logout() {
