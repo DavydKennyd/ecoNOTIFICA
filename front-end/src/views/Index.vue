@@ -72,6 +72,18 @@
 
     </section> -->
 
+    <section class="quemsomos">
+        <h2 class="tituloSecao">Quem Somos?</h2>
+
+        <p class="texto">A EcoNotifíca é uma plataforma inovadora com a missão de conectar catadores de materiais recicláveis diretamente aos cidadãos, promovendo um ciclo de reaproveitamento e reciclagem que beneficia tanto o meio ambiente quanto a economia local. Nosso objetivo é reduzir a sujeira urbana, aumentar a conscientização ambiental e, ao mesmo tempo, proporcionar uma fonte de renda digna para os catadores e recicladores.
+
+Acreditamos que cada ação conta quando se trata de cuidar do nosso planeta. Por isso, criamos uma solução simples e eficiente, onde os cidadãos podem notificar a plataforma sobre materiais recicláveis que desejam descartar, enquanto os catadores têm acesso direto a essas informações, podendo coletá-los e destiná-los de forma correta.
+
+A EcoNotifíca tem como prioridade a sustentabilidade, incentivando o descarte responsável e promovendo a economia circular. Ao escolher utilizar nossa plataforma, você contribui para um futuro mais limpo, justo e ecológico, ajudando a transformar o lixo em um recurso valioso para todos.
+
+Junte-se a nós nessa jornada! O futuro do nosso planeta depende das pequenas atitudes de cada um. Vamos fazer a diferença, juntos!</p>
+    </section>
+
     <section class="mapa">
 
 
@@ -80,25 +92,35 @@
 
     <footer>
 
-        <center>
-            <ul class="footer_ul">
+        <center><img :src="require('@/assets/logo_login.png')" alt="LOGO-ECONOTIFICA" class="imagens"></center>
+
+        <ul class="footer_ul">
+
+            <div>
+                <li>
+                    <p>Sobre</p>
+                </li>
+                <li>
+                    <p>Opçoes de coleta</p>
+                </li>
+                <li>
+                    <p>Login</p>
+                </li>
+                <li>
+                    <p>Cadastro</p>
+                </li>
+            </div>
+            <div>
                 <li class="footer_ul_li">
                     <a href=""><font-awesome-icon :icon="['fab', 'whatsapp']" class="ico" /></a>
                 </li>
                 <li class="footer_ul_li">
                     <a href=""><font-awesome-icon :icon="['fab', 'instagram']" class="ico" /></a>
                 </li>
+            </div>
 
-            </ul>
-            <p class="developer">Made by developer the IFRN</p>
-            <ul style="display: flex;">
-                <li><a href="https://raque-lvi.github.io/Curriculo_onlin/">
-                        <p id="footer_i" style="font-size: 20px;"> Web </p>
-                    </a></li>
-                <li> <a href="https://github.com/Raque-lVi"><i id="footer_i" class="fa-brands fa-github"></i></a></li>
-            </ul>
 
-        </center>
+        </ul>
 
     </footer>
 
@@ -108,56 +130,32 @@
 
 <style>
 
-footer {
 
-    background-color: rgb(0, 46, 15);
-}
 
-.ico{
-    font-size: 1.5vw;
-}
-footer ul{
-    display: flex;
-    right: 0;
-    width: 5%;
-}
-/* .footer_ul {
-    display: flex;
-    padding-top: 2%;
 
-} */
-
-/* footer ul {
-    margin-right: 45%;
-    margin-left: 45%;
+.tituloSecao{
+    color: var(--colorBanco);
+    padding: 10px;
+    width: 90vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    background-color: var(--colorBlack);
+    text-align: center;
+    border-radius: 20px;
+    margin-bottom: 3vh;
+    
 
 }
 
-footer ul li {
-    margin: 10%;
-
+.quemsomos{
+    background-color: var(--colorBanco);
+    padding-top: 10vh;
+    width: 100%;
 }
 
-#footer_i {
 
-    font-size: 30px;
-    color: var(--cor_basic);
-}
 
-#footer_i:hover {
 
-    font-size: 30px;
-    color: green;
-
-}
-
-.developer {
-    padding-top: 2%;
-}
-
-.developer:hover {
-    color: var(--cor_principal);
-} */
 
 
 
@@ -203,7 +201,7 @@ h1 {
 .divisoria {
     width: 100%;
     height: 5px;
-    background-color: var(--colorBanco);
+    background-color: white;
     border: none;
     margin: 20px 0;
 }
@@ -244,6 +242,48 @@ h1 {
     padding-bottom: 10px;
 }
 
+
+
+
+
+
+
+
+footer {
+    padding: 2.5vw;
+    background-color: rgb(0, 46, 15);
+    color: white;
+    border-top: white solid 2px;
+}
+
+.ico{
+    font-size: 1.7vw;
+}
+.ico:hover{
+    color: rgb(183, 255, 142);
+
+}
+footer ul li p:hover {
+    color: rgb(183, 255, 142);
+    cursor: pointer;
+}
+footer ul{
+    display: flex;
+} 
+
+footer ul li{
+    padding: 10px;
+    font-size: 15px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+} 
+
+
+
+.imagens{
+    width: 10vw;
+    margin-bottom: 5vh
+}
 
 
 
