@@ -5,7 +5,12 @@
     </div>
     <button class="btn-logout" @click="logout">Sair</button>
 
-    
+    <!-- Mensagem de feedback -->
+    <div v-if="mensagem.visivel" :class="['mensagem', mensagem.tipo]">
+      {{ mensagem.texto }}
+      <button @click="fecharMensagem" class="fechar-mensagem">×</button>
+    </div>
+
     <div id="content-container">
       <Lateral_sidebar />
       <div id="content">
@@ -14,13 +19,11 @@
         </div>
         <div class="container-wrapper">
           <div class="container">
-            
             <div class="user-info">
               <p><strong>Nome:</strong> {{ user.username }}</p>
               <p><strong>E-mail:</strong> {{ user.email }}</p>
             </div>
 
-            
             <div class="pontos-cadastrados">
               <h2>Pontos de Coleta Cadastrados</h2>
               <div v-if="pontosDeColeta.length > 0">
@@ -28,19 +31,17 @@
                   <p><strong>Nome:</strong> {{ ponto.name }}</p>
                   <p><strong>Endereço:</strong> {{ ponto.address }}</p>
                   <p><strong>Material:</strong> {{ ponto.material_type }}</p>
-                  <button @click="excluirPonto(ponto.id)">Excluir</button> 
+                  <button @click="excluirPonto(ponto.id)">Excluir</button>
                 </div>
               </div>
               <p v-else>Nenhum ponto de coleta cadastrado.</p>
             </div>
 
-            
             <div class="password-section">
               <button class="btn-alterar-senha" @click="mostrarFormularioSenha = !mostrarFormularioSenha">
                 {{ mostrarFormularioSenha ? 'Ocultar' : 'Alterar Senha' }}
               </button>
 
-              
               <form v-if="mostrarFormularioSenha" @submit.prevent="alterarSenha">
                 <label for="current-password">Senha Atual:</label>
                 <input type="password" id="current-password" v-model="senhaAtual" required>
@@ -73,21 +74,24 @@ export default {
         username: '',
         email: '',
       },
-      pontosDeColeta: [], 
-      senhaAtual: '', 
-      novaSenha: '', 
-      confirmarSenha: '', 
+      pontosDeColeta: [],
+      senhaAtual: '',
+      novaSenha: '',
+      confirmarSenha: '',
       mostrarFormularioSenha: false,
       loading: false,
+      mensagem: {
+        visivel: false,
+        texto: '',
+        tipo: 'sucesso', // ou 'erro'
+      },
     };
   },
   async created() {
-    
     await this.carregarDadosUsuario();
     await this.carregarPontosDeColeta();
   },
   methods: {
-    
     async carregarDadosUsuario() {
       this.loading = true;
       try {
@@ -97,16 +101,15 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.user = response.data; 
+        this.user = response.data;
       } catch (error) {
         console.error('Erro ao carregar dados do usuário:', error);
-        alert('Erro ao carregar dados do perfil. Tente novamente mais tarde.');
+        this.exibirMensagem('Erro ao carregar dados do perfil. Tente novamente mais tarde.', 'erro');
       } finally {
         this.loading = false;
       }
     },
 
-    
     async carregarPontosDeColeta() {
       try {
         const token = localStorage.getItem('authToken');
@@ -115,90 +118,97 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.pontosDeColeta = response.data; 
+        this.pontosDeColeta = response.data;
       } catch (error) {
         console.error('Erro ao carregar pontos de coleta:', error);
-        alert('Erro ao carregar pontos de coleta. Tente novamente mais tarde.');
+        this.exibirMensagem('Erro ao carregar pontos de coleta. Tente novamente mais tarde.', 'erro');
       }
     },
 
-    // Altera a senha do usuário
     async alterarSenha() {
-    if (this.novaSenha !== this.confirmarSenha) {
-      alert('As senhas não coincidem.');
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem('authToken');
-      const response = await axios.post(
-        'http://localhost:5000/api/auth/alterar-senha',
-        {
-          senhaAtual: this.senhaAtual,
-          novaSenha: this.novaSenha,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      alert(response.data.message); // Exibe a mensagem de sucesso
-      this.senhaAtual = '';
-      this.novaSenha = '';
-      this.confirmarSenha = '';
-      this.mostrarFormularioSenha = false; // Oculta o formulário após a alteração
-    } catch (error) {
-      console.error('Erro ao alterar senha:', error);
-      if (error.response && error.response.data.error) {
-        alert(error.response.data.error); // Exibe a mensagem de erro do backend
-      } else {
-        alert('Erro ao alterar senha. Tente novamente mais tarde.');
+      if (this.novaSenha !== this.confirmarSenha) {
+        this.exibirMensagem('As senhas não coincidem.', 'erro');
+        return;
       }
-    }
-  },
 
-    async excluirPonto(pontoId) {
-    console.log('ID do ponto de coleta:', pontoId); 
-    if (confirm('Tem certeza que deseja excluir este ponto de coleta?')) {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await fetch(`http://localhost:5000/api/pontos/pontos-de-coleta/${pontoId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`,
+        const response = await axios.post(
+          'http://localhost:5000/api/auth/alterar-senha',
+          {
+            senhaAtual: this.senhaAtual,
+            novaSenha: this.novaSenha,
           },
-        });
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        if (!response.ok) {
-          throw new Error('Erro ao excluir ponto de coleta');
-        }
-
-        const data = await response.json();
-        alert(data.message); // Exibe a mensagem de sucesso
-
-        // Atualiza a lista de pontos de coleta
-        await this.carregarPontosDeColeta(); // Recarrega a lista de pontos de coleta
+        this.exibirMensagem(response.data.message, 'sucesso');
+        this.senhaAtual = '';
+        this.novaSenha = '';
+        this.confirmarSenha = '';
+        this.mostrarFormularioSenha = false;
       } catch (error) {
-        console.error('Erro ao excluir ponto de coleta:', error);
-        alert('Erro ao excluir ponto de coleta. Tente novamente mais tarde.');
+        console.error('Erro ao alterar senha:', error);
+        if (error.response && error.response.data.error) {
+          this.exibirMensagem(error.response.data.error, 'erro');
+        } else {
+          this.exibirMensagem('Erro ao alterar senha. Tente novamente mais tarde.', 'erro');
+        }
       }
-    }
-  },
+    },
 
+    async excluirPonto(pontoId) {
+      if (confirm('Tem certeza que deseja excluir este ponto de coleta?')) {
+        try {
+          const token = localStorage.getItem('authToken');
+          const response = await fetch(`http://localhost:5000/api/pontos/pontos-de-coleta/${pontoId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
 
-    // Faz logout do usuário
+          if (!response.ok) {
+            throw new Error('Erro ao excluir ponto de coleta');
+          }
+
+          const data = await response.json();
+          this.exibirMensagem(data.message, 'sucesso');
+          await this.carregarPontosDeColeta();
+        } catch (error) {
+          console.error('Erro ao excluir ponto de coleta:', error);
+          this.exibirMensagem('Erro ao excluir ponto de coleta. Tente novamente mais tarde.', 'erro');
+        }
+      }
+    },
+
     logout() {
       localStorage.removeItem('authToken');
       localStorage.removeItem('username');
       this.$router.push('/login');
     },
+
+    exibirMensagem(texto, tipo) {
+      this.mensagem.visivel = true;
+      this.mensagem.texto = texto;
+      this.mensagem.tipo = tipo;
+      setTimeout(() => {
+        this.fecharMensagem();
+      }, 5000); // Fecha a mensagem após 5 segundos
+    },
+
+    fecharMensagem() {
+      this.mensagem.visivel = false;
+    },
   },
 };
 </script>
-  
- <style scoped>
+
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 body {
@@ -250,7 +260,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza o conteúdo horizontalmente */
+  align-items: center;
   margin-top: -250px;
 }
 
@@ -259,16 +269,17 @@ body {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 800px; /* Limita a largura do conteúdo */
+  max-width: 800px;
   margin-bottom: 20px;
 }
-.header h1{
+
+.header h1 {
   text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
 }
 
 .container-wrapper {
   width: 100%;
-  max-width: 800px; /* Limita a largura do conteúdo */
+  max-width: 800px;
   margin-top: 20px;
 }
 
@@ -324,7 +335,7 @@ button {
 
 .btn-logout {
   position: fixed;
-  top: 75px; /* Logo abaixo do navbar */
+  top: 75px;
   right: 20px;
   background-color: #f44336;
   color: white;
@@ -335,13 +346,8 @@ button {
   z-index: 9999;
 }
 
-
 button:hover {
   background-color: #45a049;
-}
-
-.btn-logout {
-  background-color: #f44336;
 }
 
 .btn-logout:hover {
@@ -355,5 +361,35 @@ button:hover {
 
 .btn-alterar-senha:hover {
   background-color: #f57c00;
+}
+
+.mensagem {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10000;
+}
+
+.mensagem.sucesso {
+  background-color: #4CAF50;
+}
+
+.mensagem.erro {
+  background-color: #f44336;
+}
+
+.fechar-mensagem {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
 }
 </style>
