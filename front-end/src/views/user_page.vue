@@ -94,6 +94,15 @@
       </div>
     </div>
   </div>
+  <div id="content-container">
+  <!-- Conteúdo existente -->
+
+  <!-- Notificação de sucesso -->
+  <div v-if="showSuccessMessage" class="success-message">
+    <i class="fas fa-check-circle"></i>
+    <p>Ponto de coleta cadastrado com sucesso!</p>
+  </div>
+</div>
 </template>
 
 <script>
@@ -119,6 +128,7 @@ export default {
         descricao: "",
       },
       pontoDetalhado: null,
+      showSuccessMessage: false, 
     };
   },
   methods: {
@@ -176,7 +186,11 @@ export default {
         };
         this.$refs.fileInput.value = "";
 
-        alert("Ponto de coleta adicionado com sucesso!");
+        this.showSuccessMessage = true;
+        setTimeout(() => {
+          this.showSuccessMessage = false;
+        }, 3000); // Esconder a notificação após 3 segundos
+
         this.currentView = "search";
       } catch (error) {
         console.error("Erro ao adicionar ponto de coleta:", error);
@@ -229,6 +243,53 @@ body {
   height: auto;
   z-index: 10;
   filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.7)); 
+}
+
+
+
+.success-message {
+  position: fixed;
+  top: 85px; 
+  right: 20px; 
+  background-color: rgba(45, 170, 13, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: #fff;
+  z-index: 1000;
+  animation: fadeInScale 0.5s ease-in-out forwards;
+}
+
+.success-message i {
+  font-size: 48px;
+  color: #4CAF50;
+  margin-bottom: 10px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.success-message p {
+  font-size: 18px;
+  margin: 0;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 /* Navbar */

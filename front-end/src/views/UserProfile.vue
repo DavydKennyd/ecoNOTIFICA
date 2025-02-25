@@ -14,13 +14,13 @@
         </div>
         <div class="container-wrapper">
           <div class="container">
-            <!-- Informações do usuário -->
+            
             <div class="user-info">
               <p><strong>Nome:</strong> {{ user.username }}</p>
               <p><strong>E-mail:</strong> {{ user.email }}</p>
             </div>
 
-            <!-- Pontos de coleta cadastrados pelo usuário -->
+            
             <div class="pontos-cadastrados">
               <h2>Pontos de Coleta Cadastrados</h2>
               <div v-if="pontosDeColeta.length > 0">
@@ -28,19 +28,19 @@
                   <p><strong>Nome:</strong> {{ ponto.name }}</p>
                   <p><strong>Endereço:</strong> {{ ponto.address }}</p>
                   <p><strong>Material:</strong> {{ ponto.material_type }}</p>
-                  <button @click="excluirPonto(ponto.id)">Excluir</button> <!-- Botão de exclusão -->
+                  <button @click="excluirPonto(ponto.id)">Excluir</button> 
                 </div>
               </div>
               <p v-else>Nenhum ponto de coleta cadastrado.</p>
             </div>
 
-            <!-- Botão para exibir o formulário de alteração de senha -->
+            
             <div class="password-section">
               <button class="btn-alterar-senha" @click="mostrarFormularioSenha = !mostrarFormularioSenha">
                 {{ mostrarFormularioSenha ? 'Ocultar' : 'Alterar Senha' }}
               </button>
 
-              <!-- Formulário de alteração de senha -->
+              
               <form v-if="mostrarFormularioSenha" @submit.prevent="alterarSenha">
                 <label for="current-password">Senha Atual:</label>
                 <input type="password" id="current-password" v-model="senhaAtual" required>
@@ -73,21 +73,21 @@ export default {
         username: '',
         email: '',
       },
-      pontosDeColeta: [], // Lista de pontos de coleta cadastrados pelo usuário
-      senhaAtual: '', // Senha atual para alteração
-      novaSenha: '', // Nova senha
-      confirmarSenha: '', // Confirmação da nova senha
-      mostrarFormularioSenha: false, // Controla a exibição do formulário de alteração de senha
-      loading: false, // Estado de carregamento
+      pontosDeColeta: [], 
+      senhaAtual: '', 
+      novaSenha: '', 
+      confirmarSenha: '', 
+      mostrarFormularioSenha: false,
+      loading: false,
     };
   },
   async created() {
-    // Carrega os dados do usuário e os pontos de coleta ao criar o componente
+    
     await this.carregarDadosUsuario();
     await this.carregarPontosDeColeta();
   },
   methods: {
-    // Carrega os dados do usuário logado
+    
     async carregarDadosUsuario() {
       this.loading = true;
       try {
@@ -97,7 +97,7 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.user = response.data; // Atualiza os dados do usuário
+        this.user = response.data; 
       } catch (error) {
         console.error('Erro ao carregar dados do usuário:', error);
         alert('Erro ao carregar dados do perfil. Tente novamente mais tarde.');
@@ -106,7 +106,7 @@ export default {
       }
     },
 
-    // Carrega os pontos de coleta cadastrados pelo usuário
+    
     async carregarPontosDeColeta() {
       try {
         const token = localStorage.getItem('authToken');
@@ -115,7 +115,7 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.pontosDeColeta = response.data; // Atualiza a lista de pontos de coleta
+        this.pontosDeColeta = response.data; 
       } catch (error) {
         console.error('Erro ao carregar pontos de coleta:', error);
         alert('Erro ao carregar pontos de coleta. Tente novamente mais tarde.');
