@@ -3,8 +3,8 @@
     <div id="navbar">
       <img :src="require('@/assets/logo_login.png')" alt="LOGO" class="logo" />
     </div>
-
     <button class="btn-logout" @click="logout">Sair</button>
+
     
     <div id="content-container">
       <Lateral_sidebar />

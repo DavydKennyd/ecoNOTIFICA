@@ -43,7 +43,7 @@
             <label>Descrição:</label>
             <textarea v-model="novoPonto.descricao" placeholder="Adicione uma descrição"></textarea>
 
-            <center><button type="submit" class="btn-register botao--">CADASTRAR</button></center>
+            <center><button type="submit" class="btn-cadastrar">CADASTRAR</button></center>
           </form>
         </div>
 
@@ -66,7 +66,7 @@
               <img :src="ponto.media_url" alt="Foto do ponto de coleta" class="media" />
             </div>
             <p>📝 Descrição: {{ ponto.description }}</p>
-            <button @click="detalharPonto(ponto)">Detalhar</button>
+            <button class="btn-detalhar" @click="detalharPonto(ponto)">Detalhar</button>
           </div>
         </div>
 
@@ -74,16 +74,20 @@
         <div v-if="pontoDetalhado" class="modal">
           <div class="modal-content">
             <span class="close" @click="fecharModal">&times;</span>
-            <h3>Detalhes do Ponto de Coleta</h3>
-            <p><strong>Nome:</strong> {{ pontoDetalhado.name }}</p>
-            <p><strong>Endereço:</strong> {{ pontoDetalhado.address }}</p>
-            <p><strong>Referência:</strong> {{ pontoDetalhado.reference }}</p>
-            <p><strong>Tipo de Material:</strong> {{ pontoDetalhado.material_type }}</p>
-            <p><strong>Responsável:</strong> {{ pontoDetalhado.responsible_name }}</p>
-            <p><strong>Contato:</strong> {{ pontoDetalhado.contact_info }}</p>
-            <p><strong>Descrição:</strong> {{ pontoDetalhado.description }}</p>
-            <div v-if="pontoDetalhado.media_url">
-              <img :src="`/uploads/${pontoDetalhado.media_url}`" alt="Foto do ponto de coleta" class="media" />
+            <h3 class="modal-title">Detalhes do Ponto de Coleta</h3>
+            <div class="modal-grid">
+              <div class="modal-image" v-if="pontoDetalhado.media_url">
+                <img :src="`/uploads/${pontoDetalhado.media_url}`" alt="Foto do ponto de coleta" />
+              </div>
+              <div class="modal-details">
+                <p><strong>Nome:</strong> {{ pontoDetalhado.name }}</p>
+                <p><strong>Endereço:</strong> {{ pontoDetalhado.address }}</p>
+                <p><strong>Referência:</strong> {{ pontoDetalhado.reference }}</p>
+                <p><strong>Tipo de Material:</strong> {{ pontoDetalhado.material_type }}</p>
+                <p><strong>Responsável:</strong> {{ pontoDetalhado.responsible_name }}</p>
+                <p><strong>Contato:</strong> {{ pontoDetalhado.contact_info }}</p>
+                <p><strong>Descrição:</strong> {{ pontoDetalhado.description }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -278,6 +282,35 @@ body {
   background-color: #45a049;
 }
 
+
+
+.btn-cadastrar {
+  background-color: #4CAF50; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.btn-cadastrar:hover {
+  background-color: #45a049; 
+  transform: translateY(-2px); 
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); 
+}
+
+.btn-cadastrar:active {
+  transform: translateY(0);
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1); 
+}
+
 /* Formulário */
 .form-container {
   background-color: #7FBF6D;
@@ -292,6 +325,36 @@ body {
   -ms-overflow-style: none; 
   scrollbar-width: none;
 }
+
+.btn-detalhar {
+  background-color: #4CAF50; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px; 
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.btn-detalhar:hover {
+  background-color: #45a049;
+  transform: translateY(-2px); 
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-detalhar:active {
+  transform: translateY(0);
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1); 
+}
+
+
+
 
 form label {
   display: block;
@@ -351,27 +414,77 @@ form textarea {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo mais escuro */
   z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.modal-title {
+  font-size: 24px;
+  color: #1F7F15;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.modal-image img {
   width: 100%;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-details p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.modal-details strong {
+  color: #1F7F15;
 }
 
 .close {
   float: right;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
+  color: #aaa;
   cursor: pointer;
+  transition: color 0.2s;
 }
 
 .close:hover {
-  color: red;
+  color: #ff0000;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 </style>
