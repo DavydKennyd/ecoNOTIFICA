@@ -67,7 +67,7 @@
             </div>
             <p>📝 Descrição: {{ ponto.description }}</p>
             <button class="btn-detalhar" @click="detalharPonto(ponto)">Detalhar</button>
-            <button v-if="ponto.user_id !== user.id" class="btn-interesse" @click="registrarInteresse(ponto.id)">Tenho interesse</button>
+            <button v-if="ponto.user_id !== user.id" class="btn-interesse" @click="mostrarConfirmacaoInteresse(ponto.id)">Tenho interesse</button>
           </div>
         </div>
 
@@ -92,18 +92,26 @@
             </div>
           </div>
         </div>
+
+        <!-- Caixa de confirmação de interesse -->
+        <div v-if="showInterestConfirmation" class="interest-confirmation-modal">
+          <div class="interest-confirmation-content">
+            <p>Você tem certeza que deseja registrar interesse neste ponto de coleta?</p>
+            <button class="btn-ok" @click="confirmarInteresse">OK</button>
+            <button class="btn-cancelar" @click="fecharConfirmacaoInteresse">Cancelar</button>
+          </div>
+        </div>
+
+        <!-- Notificação de sucesso -->
+        <div v-if="showSuccessNotification" class="success-notification">
+          <div class="success-notification-content">
+            <span class="check-icon">✅</span>
+            <p>Interesse registrado com sucesso!</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div id="content-container">
-  <!-- Conteúdo existente -->
-
-  <!-- Notificação de sucesso -->
-  <div v-if="showSuccessMessage" class="success-message">
-    <i class="fas fa-check-circle"></i>
-    <p>Ponto de coleta cadastrado com sucesso!</p>
-  </div>
-</div>
 </template>
 
 <script>
@@ -134,7 +142,9 @@ export default {
         descricao: "",
       },
       pontoDetalhado: null,
-      showSuccessMessage: false, 
+      showInterestConfirmation: false,
+      pontoIdParaInteresse: null,
+      showSuccessNotification: false,
     };
   },
   methods: {
@@ -192,11 +202,6 @@ export default {
         };
         this.$refs.fileInput.value = "";
 
-        this.showSuccessMessage = true;
-        setTimeout(() => {
-          this.showSuccessMessage = false;
-        }, 3000); // Esconder a notificação após 3 segundos
-
         this.currentView = "search";
       } catch (error) {
         console.error("Erro ao adicionar ponto de coleta:", error);
@@ -204,29 +209,49 @@ export default {
       }
     },
 
-    async registrarInteresse(pontoId) {
-      try {
-        const token = localStorage.getItem('authToken');
-        const response = await fetch('http://localhost:5000/api/pontos/registrar-interesse', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ pontoId })
-        });
+    mostrarConfirmacaoInteresse(pontoId) {
+      this.pontoIdParaInteresse = pontoId;
+      this.showInterestConfirmation = true;
+    },
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Erro ao registrar interesse');
+    fecharConfirmacaoInteresse() {
+      this.showInterestConfirmation = false;
+      this.pontoIdParaInteresse = null;
+    },
+
+    async confirmarInteresse() {
+      if (this.pontoIdParaInteresse) {
+        try {
+          const token = localStorage.getItem('authToken');
+          const response = await fetch('http://localhost:5000/api/pontos/registrar-interesse', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ pontoId: this.pontoIdParaInteresse })
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Erro ao registrar interesse');
+          }
+
+          await response.json();
+          this.showInterestConfirmation = false;
+          this.mostrarNotificacaoSucesso();
+        } catch (error) {
+          console.error('Erro ao registrar interesse:', error);
+          alert(error.message || 'Erro ao registrar interesse!');
         }
-
-        await response.json();
-        alert('Interesse registrado com sucesso!');
-      } catch (error) {
-        console.error('Erro ao registrar interesse:', error);
-        alert(error.message || 'Erro ao registrar interesse!');
       }
+    },
+
+    mostrarNotificacaoSucesso() {
+      this.showSuccessNotification = true;
+      setTimeout(() => {
+        this.showSuccessNotification = false;
+      }, 3000); // Esconde a notificação após 3 segundos
     },
 
     toggleView(view) {
@@ -274,53 +299,6 @@ body {
   height: auto;
   z-index: 10;
   filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.7)); 
-}
-
-
-
-.success-message {
-  position: fixed;
-  top: 85px; 
-  right: 20px; 
-  background-color: rgba(45, 170, 13, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  color: #fff;
-  z-index: 1000;
-  animation: fadeInScale 0.5s ease-in-out forwards;
-}
-
-.success-message i {
-  font-size: 48px;
-  color: #4CAF50;
-  margin-bottom: 10px;
-  animation: pulse 1.5s infinite ease-in-out;
-}
-
-.success-message p {
-  font-size: 18px;
-  margin: 0;
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
 }
 
 /* Navbar */
@@ -373,8 +351,6 @@ body {
 .btn:hover {
   background-color: #45a049;
 }
-
-
 
 .btn-cadastrar {
   background-color: #4CAF50; 
@@ -444,9 +420,6 @@ body {
   transform: translateY(0);
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1); 
 }
-
-
-
 
 form label {
   display: block;
@@ -591,6 +564,95 @@ form textarea {
   background-color: #45a049;
   transform: translateY(-2px); 
   box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Caixa de confirmação de interesse */
+.interest-confirmation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.interest-confirmation-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.interest-confirmation-content p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.btn-ok {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btn-ok:hover {
+  background-color: #45a049;
+}
+
+.btn-cancelar {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background-color: #d32f2f;
+}
+
+/* Notificação de sucesso */
+.success-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: fadeInScale 0.3s ease-in-out;
+}
+
+.success-notification-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.check-icon {
+  font-size: 20px;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Animações */
