@@ -46,8 +46,10 @@ export default {
   data() {
     return {
       Time: [
-        { name: "John Doe", role: "Desenvolvedor", image: "Time-member1.jpg" },
-        { name: "Jane Smith", role: "Gerente de Projeto", image: "Time-member2.jpg" },
+        { name: "Davyd Kennyd", role: "Desenvolvedor Full-Stack", image: "/images/davyd.jpeg" },
+        { name: "Vivian Raquel", role: "Gerente de Projeto e Desenvolvedora Front-end", image: "/images/vivian.jpeg" },
+        { name: "Welson Rodrigues", role: "Desenvolvedor Back-end", image: "/images/welson.jpeg" },
+        { name: "Jainy Eduarda", role: "Desenvolvedora Front-end e Designer ", image: "/images/jaminy.jpg" },
       ],
     };
   },
