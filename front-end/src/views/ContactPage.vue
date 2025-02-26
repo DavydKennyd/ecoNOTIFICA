@@ -15,18 +15,20 @@
           <form @submit.prevent="sendMessage">
             <div class="form-group">
               <label for="name">Nome:</label>
-              <input type="text" id="name" v-model="name" placeholder="Digite seu nome" />
+              <input type="text" id="name" v-model="name" placeholder="Digite seu nome" required />
             </div>
             <div class="form-group">
               <label for="email">E-mail:</label>
-              <input type="email" id="email" v-model="email" placeholder="Digite seu e-mail" />
+              <input type="email" id="email" v-model="email" placeholder="Digite seu e-mail" required />
             </div>
             <div class="form-group">
               <label for="message">Mensagem:</label>
-              <textarea id="message" v-model="message" placeholder="Digite sua mensagem"></textarea>
+              <textarea id="message" v-model="message" placeholder="Digite sua mensagem" required></textarea>
             </div>
             <button type="submit">Enviar Mensagem</button>
           </form>
+          <p v-if="mensagemSucesso" class="mensagem-sucesso">{{ mensagemSucesso }}</p>
+          <p v-if="mensagemErro" class="mensagem-erro">{{ mensagemErro }}</p>
         </section>
       </div>
     </div>
@@ -35,6 +37,7 @@
 
 <script>
 import Lateral_sidebar from "@/components/sidebar.vue";
+import axios from 'axios';
 
 export default {
   components: {
@@ -44,19 +47,40 @@ export default {
     return {
       name: '',
       email: '',
-      message: ''
+      message: '',
+      mensagemSucesso: '', // Mensagem de sucesso
+      mensagemErro: '', // Mensagem de erro
     };
   },
   methods: {
-    sendMessage() {
-      // Lógica para enviar a mensagem
-      console.log('Nome:', this.name);
-      console.log('E-mail:', this.email);
-      console.log('Mensagem:', this.message);
-      alert('Mensagem enviada com sucesso!');
-      this.name = '';
-      this.email = '';
-      this.message = '';
+    async sendMessage() {
+      // Limpa as mensagens anteriores
+      this.mensagemSucesso = '';
+      this.mensagemErro = '';
+
+      try {
+        // Endpoint do Formspree (substitua pelo seu endpoint)
+        const endpoint = 'https://formspree.io/f/mgvojqyw';
+
+        // Envia os dados do formulário para o Formspree
+        const response = await axios.post(endpoint, {
+          name: this.name,
+          email: this.email,
+          message: this.message,
+        });
+
+        // Verifica se o envio foi bem-sucedido
+        if (response.status === 200) {
+          this.mensagemSucesso = 'Mensagem enviada com sucesso!';
+          this.name = '';
+          this.email = '';
+          this.message = '';
+        } else {
+          this.mensagemErro = 'Erro ao enviar a mensagem. Tente novamente.';
+        }
+      } catch (error) {
+        this.mensagemErro = 'Erro ao enviar a mensagem. Tente novamente.';
+      }
     },
     logout() {
       localStorage.removeItem('authToken');
@@ -206,5 +230,15 @@ button[type="submit"]:hover {
 
 .btn-logout:hover {
   background-color: #d32f2f;
+}
+
+.mensagem-sucesso {
+  color: #4CAF50;
+  margin-top: 10px;
+}
+
+.mensagem-erro {
+  color: #f44336;
+  margin-top: 10px;
 }
 </style>

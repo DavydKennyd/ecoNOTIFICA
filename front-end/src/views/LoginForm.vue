@@ -11,10 +11,12 @@
           <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" v-model="email" id="email" placeholder="exemplo@gmail.com" required />
+            <p v-if="erroEmail" class="erro-mensagem">{{ erroEmail }}</p>
           </div>
           <div class="form-group">
             <label for="password">Senha:</label>
             <input type="password" v-model="password" id="password" placeholder="******" required />
+            <p v-if="erroSenha" class="erro-mensagem">{{ erroSenha }}</p>
           </div>
           <a href="#" class="forgot-password">Esqueceu a senha?</a>
           <button type="submit" class="btn-login">ENTRAR</button>
@@ -37,10 +39,16 @@ export default {
     return {
       email: '',
       password: '',
+      erroEmail: '', // Mensagem de erro para e-mail
+      erroSenha: '', // Mensagem de erro para senha
     };
   },
   methods: {
     async login() {
+      // Limpa as mensagens de erro antes de tentar o login
+      this.erroEmail = '';
+      this.erroSenha = '';
+
       try {
         const response = await axios.post('http://localhost:5000/api/auth/login', {
           email: this.email,
@@ -56,7 +64,22 @@ export default {
         // Redirecionar para a página de perfil
         this.$router.push('/perfil');
       } catch (error) {
-        console.error(error.response?.data?.message || 'Erro ao realizar login');
+        if (error.response) {
+          const { data } = error.response; // Removida a variável 'status', pois não está sendo usada
+
+          // Verifica a mensagem de erro retornada pela API
+          if (data.error === "Senha incorreta") {
+            this.erroSenha = "Senha incorreta. Tente novamente.";
+          } else if (data.error === "E-mail não cadastrado") {
+            this.erroEmail = "E-mail não cadastrado. Verifique ou crie uma conta.";
+          } else {
+            // Outros erros genéricos
+            this.erroEmail = "Erro ao realizar login. Tente novamente.";
+          }
+        } else {
+          // Erro de conexão ou outros problemas
+          this.erroEmail = "Erro de conexão. Verifique sua internet e tente novamente.";
+        }
       }
     }
   },
@@ -165,6 +188,12 @@ body {
   border-radius: 5px;
   font-size: 1rem;
   background-color: #fff;
+}
+
+.erro-mensagem {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
 .forgot-password {
