@@ -71,18 +71,38 @@
         </div>
 
     </section> -->
-
+    
     <section class="quemsomos">
         <h2 class="tituloSecao">Quem Somos?</h2>
 
-        <p class="texto">A EcoNotifíca é uma plataforma inovadora com a missão de conectar catadores de materiais recicláveis diretamente aos cidadãos, promovendo um ciclo de reaproveitamento e reciclagem que beneficia tanto o meio ambiente quanto a economia local. Nosso objetivo é reduzir a sujeira urbana, aumentar a conscientização ambiental e, ao mesmo tempo, proporcionar uma fonte de renda digna para os catadores e recicladores.
+        <div class="texto">
+            
+            <div>
+                <p>A EcoNotifíca é uma plataforma inovadora com a missão de conectar catadores de materiais recicláveis
+                    diretamente aos cidadãos, promovendo um ciclo de reaproveitamento e reciclagem que beneficia tanto o
+                    meio ambiente quanto a economia local. </p>
+                <p>Nosso objetivo é reduzir a sujeira urbana, aumentar a conscientização ambiental e, ao mesmo tempo,
+                    proporcionar uma fonte de renda digna para os catadores e recicladores.</p>
 
-Acreditamos que cada ação conta quando se trata de cuidar do nosso planeta. Por isso, criamos uma solução simples e eficiente, onde os cidadãos podem notificar a plataforma sobre materiais recicláveis que desejam descartar, enquanto os catadores têm acesso direto a essas informações, podendo coletá-los e destiná-los de forma correta.
+                <p>Acreditamos que cada ação conta quando se trata de cuidar do nosso planeta. Por isso, criamos uma
+                    solução
+                    simples e eficiente, onde os cidadãos podem notificar a plataforma sobre materiais recicláveis que
+                    desejam descartar, enquanto os catadores têm acesso direto a essas informações, podendo coletá-los e
+                    destiná-los de forma correta.</p>
 
-A EcoNotifíca tem como prioridade a sustentabilidade, incentivando o descarte responsável e promovendo a economia circular. Ao escolher utilizar nossa plataforma, você contribui para um futuro mais limpo, justo e ecológico, ajudando a transformar o lixo em um recurso valioso para todos.
+                <p>A EcoNotifíca tem como prioridade a sustentabilidade, incentivando o descarte responsável e
+                    promovendo a
+                    economia circular. Ao escolher utilizar nossa plataforma, você contribui para um futuro mais limpo,
+                    justo e ecológico, ajudando a transformar o lixo em um recurso valioso para todos.</p>
+                <p>Junte-se a nós nessa jornada! O futuro do nosso planeta depende das pequenas atitudes de cada um.
+                    Vamos
+                    fazer a diferença, juntos!</p>
+            </div>
 
-Junte-se a nós nessa jornada! O futuro do nosso planeta depende das pequenas atitudes de cada um. Vamos fazer a diferença, juntos!</p>
+            <img :src="require('@/assets/lixão.jpg')" alt="imagem" id="imagens">
+        </div>
     </section>
+    
 
     <section class="mapa">
 
@@ -129,35 +149,49 @@ Junte-se a nós nessa jornada! O futuro do nosso planeta depende das pequenas at
 </template>
 
 <style>
-
-
-
-
-.tituloSecao{
-    color: var(--colorBanco);
+.tituloSecao {
+    color: black;
     padding: 10px;
     width: 90vw;
     margin-left: 5vw;
     margin-right: 5vw;
-    background-color: var(--colorBlack);
+    background-color: white;
     text-align: center;
     border-radius: 20px;
     margin-bottom: 3vh;
-    
+
 
 }
 
-.quemsomos{
-    background-color: var(--colorBanco);
+.quemsomos {
+    background-color: rgb(32, 32, 32);
     padding-top: 10vh;
+    width: 100%;
+    padding-bottom: 5vh;
+}
+
+
+.texto {
+    margin: 5vh;
+    margin-bottom: 0;
+    padding-bottom: 5vh;
+    display: flex;
     width: 100%;
 }
 
 
+.texto p {
+    color: white;
+    margin-bottom: 2vh;
+    width: 50vw;
+    
 
-
-
-
+}
+#imagens{
+    margin-left: 3vw;
+    width: 30vw;
+    border-radius: 40px;
+}
 
 
 
@@ -256,31 +290,34 @@ footer {
     border-top: white solid 2px;
 }
 
-.ico{
+.ico {
     font-size: 1.7vw;
 }
-.ico:hover{
+
+.ico:hover {
     color: rgb(183, 255, 142);
 
 }
+
 footer ul li p:hover {
     color: rgb(183, 255, 142);
     cursor: pointer;
 }
-footer ul{
-    display: flex;
-} 
 
-footer ul li{
+footer ul {
+    display: flex;
+}
+
+footer ul li {
     padding: 10px;
     font-size: 15px;
     margin-left: 5vw;
     margin-right: 5vw;
-} 
+}
 
 
 
-.imagens{
+.imagens {
     width: 10vw;
     margin-bottom: 5vh
 }
