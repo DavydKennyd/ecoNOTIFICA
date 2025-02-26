@@ -67,6 +67,7 @@
             </div>
             <p>📝 Descrição: {{ ponto.description }}</p>
             <button class="btn-detalhar" @click="detalharPonto(ponto)">Detalhar</button>
+            <button v-if="ponto.user_id !== user.id" class="btn-interesse" @click="registrarInteresse(ponto.id)">Tenho interesse</button>
           </div>
         </div>
 
@@ -115,6 +116,11 @@ export default {
   },
   data() {
     return {
+      user: {
+        id: null,
+        username: '',
+        email: '',
+      },
       currentView: "add",
       pontosDeColeta: [],
       novoPonto: {
@@ -195,6 +201,30 @@ export default {
       } catch (error) {
         console.error("Erro ao adicionar ponto de coleta:", error);
         alert("Erro ao adicionar ponto de coleta!");
+      }
+    },
+
+    async registrarInteresse(pontoId) {
+      try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch('http://localhost:5000/api/pontos/registrar-interesse', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ pontoId })
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao registrar interesse');
+        }
+
+        await response.json();
+        alert('Interesse registrado com sucesso!');
+      } catch (error) {
+        console.error('Erro ao registrar interesse:', error);
+        alert('Erro ao registrar interesse!');
       }
     },
 
@@ -536,6 +566,20 @@ form textarea {
 
 .close:hover {
   color: #ff0000;
+}
+
+.btn-interesse {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-interesse:hover {
+  background-color: #45a049;
 }
 
 /* Animações */

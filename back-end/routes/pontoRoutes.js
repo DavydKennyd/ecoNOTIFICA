@@ -129,4 +129,46 @@ router.delete('/pontos-de-coleta/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// Rota para registrar interesse em um ponto de coleta
+router.post('/registrar-interesse', authenticateToken, async (req, res) => {
+  const { pontoId } = req.body;
+  const userId = req.user.userId;
+
+  try {
+    const query = `
+      INSERT INTO ponto_interesse (ponto_id, usuario_id)
+      VALUES ($1, $2)
+      RETURNING *;
+    `;
+
+    const values = [pontoId, userId];
+    const result = await pool.query(query, values);
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao registrar interesse:', error);
+    res.status(500).json({ error: 'Erro ao registrar interesse' });
+  }
+});
+
+// Rota para listar os interesses em um ponto de coleta
+router.get('/interesses/:pontoId', authenticateToken, async (req, res) => {
+  const pontoId = req.params.pontoId;
+
+  try {
+    const query = `
+      SELECT pi.*, u.username 
+      FROM ponto_interesse pi
+      JOIN users u ON pi.usuario_id = u.id
+      WHERE pi.ponto_id = $1;
+    `;
+
+    const result = await pool.query(query, [pontoId]);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar interesses:', error);
+    res.status(500).json({ error: 'Erro ao buscar interesses' });
+  }
+});
+
 module.exports = router;

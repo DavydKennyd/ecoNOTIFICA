@@ -43,9 +43,21 @@
                   <p><strong>Endereço:</strong> {{ ponto.address }}</p>
                   <p><strong>Material:</strong> {{ ponto.material_type }}</p>
                   <button @click="abrirModalConfirmacao(ponto.id)">Excluir</button>
+                  <button @click="carregarInteresses(ponto.id)">Ver interesses</button>
                 </div>
               </div>
               <p v-else>Nenhum ponto de coleta cadastrado.</p>
+            </div>
+
+            <div class="interesses">
+              <h2>Interesses no Ponto de Coleta</h2>
+              <div v-if="interesses.length > 0">
+                <div v-for="(interesse, index) in interesses" :key="index" class="interesse-item">
+                  <p><strong>Usuário:</strong> {{ interesse.username }}</p>
+                  <p><strong>Data:</strong> {{ new Date(interesse.data_interesse).toLocaleDateString() }}</p>
+                </div>
+              </div>
+              <p v-else>Nenhum interesse registrado.</p>
             </div>
 
             <div class="password-section">
@@ -86,6 +98,7 @@ export default {
         email: '',
       },
       pontosDeColeta: [],
+      interesses: [],
       senhaAtual: '',
       novaSenha: '',
       confirmarSenha: '',
@@ -137,6 +150,21 @@ export default {
       } catch (error) {
         console.error('Erro ao carregar pontos de coleta:', error);
         this.exibirMensagem('Erro ao carregar pontos de coleta. Tente novamente mais tarde.', 'erro');
+      }
+    },
+
+    async carregarInteresses(pontoId) {
+      try {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.get(`http://localhost:5000/api/pontos/interesses/${pontoId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.interesses = response.data;
+      } catch (error) {
+        console.error('Erro ao carregar interesses:', error);
+        this.exibirMensagem('Erro ao carregar interesses. Tente novamente mais tarde.', 'erro');
       }
     },
 
@@ -418,6 +446,15 @@ button:hover {
   font-size: 20px;
   cursor: pointer;
   margin-left: 10px;
+}
+
+.interesses {
+  margin-top: 20px;
+}
+
+.interesse-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
 }
 
 /* Estilos do modal de confirmação */
