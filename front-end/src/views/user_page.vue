@@ -574,13 +574,23 @@ form textarea {
   color: white;
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
   margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  position: relative;
+  left: 10px; /* Move o botão 20px para a direita */
 }
 
 .btn-interesse:hover {
   background-color: #45a049;
+  transform: translateY(-2px); 
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Animações */
