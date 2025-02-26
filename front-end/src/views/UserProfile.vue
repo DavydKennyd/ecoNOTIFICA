@@ -11,6 +11,17 @@
       <button @click="fecharMensagem" class="fechar-mensagem">×</button>
     </div>
 
+    <!-- Modal de confirmação -->
+    <div v-if="modalConfirmacao.visivel" class="modal-overlay">
+      <div class="modal">
+        <p>Tem certeza que deseja excluir este ponto de coleta?</p>
+        <div class="modal-botoes">
+          <button @click="confirmarExclusao">Sim</button>
+          <button @click="fecharModalConfirmacao">Não</button>
+        </div>
+      </div>
+    </div>
+
     <div id="content-container">
       <Lateral_sidebar />
       <div id="content">
@@ -31,7 +42,7 @@
                   <p><strong>Nome:</strong> {{ ponto.name }}</p>
                   <p><strong>Endereço:</strong> {{ ponto.address }}</p>
                   <p><strong>Material:</strong> {{ ponto.material_type }}</p>
-                  <button @click="excluirPonto(ponto.id)">Excluir</button>
+                  <button @click="abrirModalConfirmacao(ponto.id)">Excluir</button>
                 </div>
               </div>
               <p v-else>Nenhum ponto de coleta cadastrado.</p>
@@ -84,6 +95,10 @@ export default {
         visivel: false,
         texto: '',
         tipo: 'sucesso', // ou 'erro'
+      },
+      modalConfirmacao: {
+        visivel: false,
+        pontoId: null, // Armazena o ID do ponto a ser excluído
       },
     };
   },
@@ -161,11 +176,21 @@ export default {
       }
     },
 
-    async excluirPonto(pontoId) {
-      if (confirm('Tem certeza que deseja excluir este ponto de coleta?')) {
+    abrirModalConfirmacao(pontoId) {
+      this.modalConfirmacao.visivel = true;
+      this.modalConfirmacao.pontoId = pontoId;
+    },
+
+    fecharModalConfirmacao() {
+      this.modalConfirmacao.visivel = false;
+      this.modalConfirmacao.pontoId = null;
+    },
+
+    async confirmarExclusao() {
+      if (this.modalConfirmacao.pontoId) {
         try {
           const token = localStorage.getItem('authToken');
-          const response = await fetch(`http://localhost:5000/api/pontos/pontos-de-coleta/${pontoId}`, {
+          const response = await fetch(`http://localhost:5000/api/pontos/pontos-de-coleta/${this.modalConfirmacao.pontoId}`, {
             method: 'DELETE',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -182,6 +207,8 @@ export default {
         } catch (error) {
           console.error('Erro ao excluir ponto de coleta:', error);
           this.exibirMensagem('Erro ao excluir ponto de coleta. Tente novamente mais tarde.', 'erro');
+        } finally {
+          this.fecharModalConfirmacao();
         }
       }
     },
@@ -391,5 +418,55 @@ button:hover {
   font-size: 20px;
   cursor: pointer;
   margin-left: 10px;
+}
+
+/* Estilos do modal de confirmação */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.modal p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.modal-botoes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-botoes button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-botoes button:first-child {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.modal-botoes button:last-child {
+  background-color: #f44336;
+  color: white;
 }
 </style>
