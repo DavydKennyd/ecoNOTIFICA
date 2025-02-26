@@ -42,8 +42,10 @@
                   <p><strong>Nome:</strong> {{ ponto.name }}</p>
                   <p><strong>Endereço:</strong> {{ ponto.address }}</p>
                   <p><strong>Material:</strong> {{ ponto.material_type }}</p>
-                  <button @click="abrirModalConfirmacao(ponto.id)">Excluir</button>
-                  <button @click="carregarInteresses(ponto.id)">Ver interesses</button>
+                  <div class="btn-container">
+                    <button @click="abrirModalConfirmacao(ponto.id)">Excluir</button>
+                    <button @click="carregarInteresses(ponto.id)">Ver interesses</button>
+                  </div>
                 </div>
               </div>
               <p v-else>Nenhum ponto de coleta cadastrado.</p>
@@ -356,6 +358,12 @@ body {
 .ponto-item {
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
+}
+
+.btn-container {
+  display: flex;
+  gap: 20px; /* Aumente o valor para afastar mais os botões */
+  margin-top: 10px;
 }
 
 .password-section {
