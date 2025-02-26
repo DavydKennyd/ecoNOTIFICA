@@ -33,7 +33,7 @@
             <label>Contato:</label>
             <input type="text" v-model="novoPonto.contato" placeholder="Informações de contato" required />
 
-            <label>Foto/Video:</label>
+            <label>Inserir Imagem:</label>
             <input 
               type="file" 
               @change="(event) => novoPonto.fotoVideo = event.target.files[0]" 
