@@ -217,14 +217,15 @@ export default {
         });
 
         if (!response.ok) {
-          throw new Error('Erro ao registrar interesse');
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Erro ao registrar interesse');
         }
 
         await response.json();
         alert('Interesse registrado com sucesso!');
       } catch (error) {
         console.error('Erro ao registrar interesse:', error);
-        alert('Erro ao registrar interesse!');
+        alert(error.message || 'Erro ao registrar interesse!');
       }
     },
 

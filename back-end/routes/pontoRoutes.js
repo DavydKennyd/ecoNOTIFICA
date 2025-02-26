@@ -135,6 +135,21 @@ router.post('/registrar-interesse', authenticateToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
+    // Verifica se o ponto de coleta pertence ao usuário
+    const verifyQuery = 'SELECT user_id FROM collection_points WHERE id = $1';
+    const verifyResult = await pool.query(verifyQuery, [pontoId]);
+
+    if (verifyResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Ponto de coleta não encontrado' });
+    }
+
+    const pontoUserId = verifyResult.rows[0].user_id;
+
+    if (pontoUserId === userId) {
+      return res.status(400).json({ error: 'Você não pode demonstrar interesse no seu próprio ponto de coleta' });
+    }
+
+    // Se o ponto de coleta não pertence ao usuário, registra o interesse
     const query = `
       INSERT INTO ponto_interesse (ponto_id, usuario_id)
       VALUES ($1, $2)
