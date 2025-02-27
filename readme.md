@@ -52,7 +52,7 @@ npm install
 ### 3. Configuração do Banco de Dados
 
 1. Usando Tembo (Postgres na Nuvem)
-O **Tembo** é uma plataforma na nuvem especializada em PostgreSQL, oferecendo instâncias prontas para produção com IA, pesquisa vetorial e mais de 200 extensões pré-configuradas. Ele simplifica a gestão do banco de dados, com backups automáticos, escalabilidade sob demanda e alta disponibilidade. Ideal para projetos como o **Econotifica**, o Tembo reduz custos com infraestrutura e permite focar no desenvolvimento da aplicação. Além disso, sua integração fácil com ferramentas modernas acelera a implementação de funcionalidades avançadas.
+- O **Tembo** é uma plataforma na nuvem especializada em PostgreSQL, oferecendo instâncias prontas para produção com IA, pesquisa vetorial e mais de 200 extensões pré-configuradas. Ele simplifica a gestão do banco de dados, com backups automáticos, escalabilidade sob demanda e alta disponibilidade. Ideal para projetos como o **Econotifica**, o Tembo reduz custos com infraestrutura e permite focar no desenvolvimento da aplicação. Além disso, sua integração fácil com ferramentas modernas acelera a implementação de funcionalidades avançadas.
 
 2. Acesse https://tembo.io/ e crie uma instância do Postgres.
 
