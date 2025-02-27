@@ -51,9 +51,48 @@ npm install
 
 ### 3. Configuração do Banco de Dados
 
-1. Crie um banco de dados PostgreSQL chamado econotifica.
+1. Usando Tembo (Postgres na Nuvem)
+O **Tembo** é uma plataforma na nuvem especializada em PostgreSQL, oferecendo instâncias prontas para produção com IA, pesquisa vetorial e mais de 200 extensões pré-configuradas. Ele simplifica a gestão do banco de dados, com backups automáticos, escalabilidade sob demanda e alta disponibilidade. Ideal para projetos como o **Econotifica**, o Tembo reduz custos com infraestrutura e permite focar no desenvolvimento da aplicação. Além disso, sua integração fácil com ferramentas modernas acelera a implementação de funcionalidades avançadas.
 
-2. Configure as variáveis de ambiente no arquivo .env na pasta backend:
+2. Acesse https://tembo.io/ e crie uma instância do Postgres.
+
+### Estrutura do Banco de Dados
+As tabelas do banco de dados são criadas com o seguinte SQL:
+
+```bash
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,  -- Senha criptografada
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE collection_points (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,  -- Relacionamento com a tabela users
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    reference VARCHAR(255),
+    material_type VARCHAR(100),
+    responsible_name VARCHAR(100),
+    contact_info VARCHAR(255),
+    media_url TEXT,  -- URL do arquivo de foto/vídeo (pode ser armazenado em servidor ou sistema de arquivos)
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ponto_interesse (
+    id SERIAL PRIMARY KEY,
+    ponto_id INT REFERENCES collection_points(id) ON DELETE CASCADE,
+    usuario_id INT REFERENCES users(id) ON DELETE CASCADE,
+    data_interesse TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+Caso prefira usar banco de dados local:
+2.1 Configure as variáveis de ambiente no arquivo .env na pasta backend:
 
 ```bash
 DB_HOST=localhost
