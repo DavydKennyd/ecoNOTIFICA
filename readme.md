@@ -91,8 +91,8 @@ CREATE TABLE ponto_interesse (
     data_interesse TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
-Caso prefira usar banco de dados local:
-2.1 Configure as variáveis de ambiente no arquivo .env na pasta backend:
+2.1 Caso prefira usar banco de dados local:
+- Configure as variáveis de ambiente no arquivo .env na pasta backend:
 
 ```bash
 DB_HOST=localhost
